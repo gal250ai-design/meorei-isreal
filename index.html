@@ -105,7 +105,7 @@
         .hero {
             text-align: center;
             padding: 70px 20px 50px;
-            background: linear-gradient(rgba(106, 26, 33, 0.92), rgba(106, 26, 33, 0.92)), url('path_to_your_synagogue_image.jpg') center/cover;
+            background: linear-gradient(rgba(106, 26, 33, 0.92), rgba(106, 26, 33, 0.92));
             color: white;
         }
 
@@ -376,17 +376,19 @@
             gap: 15px;
         }
 
-        .gallery img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
+        .gallery-card {
+            background: #fff;
+            border: 1px solid #eee;
             border-radius: 10px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
         }
 
-        .gallery img:hover {
-            transform: scale(1.03);
+        .gallery-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
         }
 
         /* Footer */
@@ -463,7 +465,7 @@
             </ul>
         </nav>
         <div class="hebrew-date-bar" id="hebrewDateDisplay">
-            טוען תאריך עברי וזמני היום...
+            מסנכרן תאריך עברי וזמני היום...
         </div>
     </header>
 
@@ -476,7 +478,9 @@
         <h3>שכונת רחובות הצעירה - נוסח עדות המזרח</h3>
 
         <a href="#times" class="btn"><i class="far fa-clock"></i> לזמני התפילות</a>
-        <a href="https://chat.whatsapp.com/DGLLkRJHyhv4mwzmIy9EOK?s=hd&p=i&mlu=4" target="_blank" class="btn" style="background-color: #25D366; color: white;"><i class="fab fa-whatsapp"></i> קבוצת העדכונים</a>
+        <a href="https://chat.whatsapp.com/DGLLkRJHyhv4mwzmIy9EOK?s=hd&p=i&mlu=4" target="_blank" class="btn" style="background-color: #25D366; color: white;">
+            <i class="fab fa-whatsapp"></i> קבוצת העדכונים
+        </a>
     </div>
 
     <section id="times">
@@ -505,7 +509,7 @@
 
         <div class="schedule-grid">
             <div class="schedule-card">
-                <h4>סליחות (אלול/תשובה)</h4>
+                <h4>סליחות (חודש אלול)</h4>
                 <div class="time">05:10 | 18:05</div>
                 <div class="note">לפני שחרית ומנחה</div>
             </div>
@@ -545,7 +549,7 @@
                 <form id="addUpdateForm">
                     <div class="form-group">
                         <label>כותרת ההודעה / מסמך:</label>
-                        <input type="text" id="updateTitle" required placeholder="לדוגמה: עלון שבת פרשת כי תצא / לוז חגים">
+                        <input type="text" id="updateTitle" required placeholder="לדוגמה: עלון שבת / לוז חגים">
                     </div>
                     <div class="form-group">
                         <label>תוכן / פירוט:</label>
@@ -560,7 +564,7 @@
             </div>
 
             <div class="updates-list" id="updatesList">
-            </div>
+                </div>
         </div>
     </section>
 
@@ -587,13 +591,29 @@
 
     <section id="gallery">
         <div class="section-title">
-            <h2>גלריית תמונות</h2>
+            <h2>גלריית הווי הקהילה</h2>
         </div>
         <div class="gallery">
-            <img src="https://via.placeholder.com/400x300/fcf8f2/6a1a21?text=מאורי+ישראל+1" alt="תמונה מהקהילה">
-            <img src="https://via.placeholder.com/400x300/fcf8f2/6a1a21?text=מאורי+ישראל+2" alt="תמונה מהקהילה">
-            <img src="https://via.placeholder.com/400x300/fcf8f2/6a1a21?text=מאורי+ישראל+3" alt="תמונה מהקהילה">
-            <img src="https://via.placeholder.com/400x300/fcf8f2/6a1a21?text=מאורי+ישראל+4" alt="תמונה מהקהילה">
+            <div class="gallery-card">
+                <i class="fas fa-synagogue"></i>
+                <h4>בית הכנסת</h4>
+                <p>מקום תפילה ולימוד תורה באווירה קדושה ומזמינה</p>
+            </div>
+            <div class="gallery-card">
+                <i class="fas fa-book-reader"></i>
+                <h4>שיעורי תורה</h4>
+                <p>שיעורים יומיים בהלכה ובאגדה מפי רב הקהילה</p>
+            </div>
+            <div class="gallery-card">
+                <i class="fas fa-users"></i>
+                <h4>ערבי קהילה</h4>
+                <p>ערבי התעלות, התוועדויות ופעילויות לכל המשפחה</p>
+            </div>
+            <div class="gallery-card">
+                <i class="fas fa-child"></i>
+                <h4>נוער וילדים</h4>
+                <p>אמירת תהילים בשבתות ופעילויות חגים לילדים</p>
+            </div>
         </div>
     </section>
 
@@ -604,10 +624,10 @@
         <div style="text-align: center; max-width: 650px; margin: 0 auto; background: white; padding: 35px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
             <i class="fas fa-torah" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 15px;"></i>
             <p style="font-size: 1.1rem; margin-bottom: 25px;">
-                בית הכנסת ומרכז הקהילתי פועל בזכות השותפות והתמיכה שלכם. 
+                בית הכנסת והמרכז הקהילתי פועל בזכות השותפות והתמיכה שלכם. 
                 ניתן להעביר תרומות, דמי חבר, קניית עליות ופדיון כפרות בצורה מאובטחת דרך מערכת MyGabay.
             </p>
-            <a href="https://mygabay.com/YOUR_SYNAGOGUE_LINK" target="_blank" class="btn" style="font-size: 1.2rem; padding: 14px 32px;">
+            <a href="https://mygabay.com/" target="_blank" class="btn" style="font-size: 1.2rem; padding: 14px 32px;">
                 <i class="fas fa-hand-holding-heart"></i> מעבר לתרומה מאובטחת ב-MyGabay
             </a>
         </div>
@@ -617,7 +637,7 @@
         <p>© 2026 קהילת מאורי ישראל - רחובות הצעירה. כל הזכויות שמורות.</p>
         <div class="social-links">
             <a href="https://chat.whatsapp.com/DGLLkRJHyhv4mwzmIy9EOK?s=hd&p=i&mlu=4" target="_blank" title="ווטסאפ"><i class="fab fa-whatsapp"></i></a>
-            <a href="https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" title="יוטיוב"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" title="יוטיוב בית הכנסת"><i class="fab fa-youtube"></i></a>
         </div>
     </footer>
 
@@ -635,7 +655,7 @@
     </div>
 
     <script>
-        // --- 1. תפריט המבורגר רספונסיבי ---
+        // --- 1. תפריט המבורגר למובייל ---
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const navLinks = document.getElementById('navLinks');
 
@@ -649,95 +669,192 @@
             });
         });
 
-        // --- 2. שאיבת נתונים אוטומטית מ-Hebcal מותאמת לרחובות ---
+        // 2. פונקציית משיכת נתונים חסינת חסימות
         async function fetchHebcalData() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth() + 1;
-            const day = today.getDate();
+            console.log("⏳ מתחיל למשוך נתונים מ-Hebcal...");
+            document.getElementById('hebrewDateDisplay').innerText = "מתחיל בסנכרון נתונים...";
 
-            const monthStr = String(month).padStart(2, '0');
-            const dayStr = String(day).padStart(2, '0');
-            const localDateStr = `${year}-${monthStr}-${dayStr}`;
+            const dateObj = new Date();
+            const year = dateObj.getFullYear();
+            const month = dateObj.getMonth() + 1;
+            const day = dateObj.getDate();
+            const cityId = '293703'; // רחובות
 
-            const cityId = '293703'; // מזהה רחובות ב-Hebcal
-
-            // א. תאריך עברי
+            // משיכת תאריך עברי
             try {
-                const dateRes = await fetch(`https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${month}&gd=${day}&g2h=1`);
-                if (dateRes.ok) {
-                    const dateData = await dateRes.json();
-                    if (dateData && dateData.hebrew) {
-                        document.getElementById('hebrewDateDisplay').innerText = `היום: ${dateData.hebrew} | זמני היום מעודכנים לפי אופק רחובות`;
-                    }
-                }
-            } catch (error) {
-                console.error("שגיאה בתאריך עברי:", error);
+                let res = await fetch(`https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${month}&gd=${day}&g2h=1`);
+                let data = await res.json();
+                document.getElementById('hebrewDateDisplay').innerText = `היום: ${data.hebrew} | מעודכן לפי אופק רחובות`;
+            } catch (err) {
+                console.error("❌ חסימה בגישה לתאריך העברי:", err);
+                document.getElementById('hebrewDateDisplay').innerText = "שגיאת רשת (ייתכן עקב סינון אינטרנט) - מציג זמנים משוערים";
             }
 
-            // ב. זמני שבת ופרשת השבוע
+            // משיכת פרשה וזמני שבת
             try {
-                const shabbatRes = await fetch(`https://www.hebcal.com/shabbat?cfg=json&geonameid=${cityId}&M=on&lg=h`);
-                if (shabbatRes.ok) {
-                    const shabbatData = await shabbatRes.json();
-                    if (shabbatData && shabbatData.items) {
-                        let parasha = '';
-                        let candleLighting = '';
-                        let havdalah = '';
-
-                        shabbatData.items.forEach(item => {
-                            if (item.category === 'parashat') {
-                                parasha = item.hebrew || item.title;
-                            }
-                            if (item.category === 'candles') {
-                                const match = (item.hebrew || item.title).match(/\d{1,2}:\d{2}/);
-                                if (match) candleLighting = match[0];
-                            }
-                            if (item.category === 'havdalah') {
-                                const match = (item.hebrew || item.title).match(/\d{1,2}:\d{2}/);
-                                if (match) havdalah = match[0];
-                            }
-                        });
-
-                        if (parasha) document.getElementById('parashaDisplay').innerText = parasha;
-                        if (candleLighting) document.getElementById('candleLightingDisplay').innerText = candleLighting;
-                        if (havdalah) document.getElementById('havdalahDisplay').innerText = havdalah;
+                let shabbatRes = await fetch(`https://www.hebcal.com/shabbat?cfg=json&geonameid=${cityId}&M=on&lg=h`);
+                let shabbatData = await shabbatRes.json();
+                
+                let parasha = "שבת קודש", candles = "18:50 (משוער)", havdalah = "19:45 (משוער)";
+                
+                shabbatData.items.forEach(item => {
+                    if (item.category === 'parashat') parasha = item.hebrew || item.title;
+                    if (item.category === 'candles') {
+                        let m = (item.hebrew || item.title).match(/\d{1,2}:\d{2}/);
+                        if (m) candles = m[0];
                     }
-                }
-            } catch (error) {
-                console.error("שגיאה בזמני שבת:", error);
+                    if (item.category === 'havdalah') {
+                        let m = (item.hebrew || item.title).match(/\d{1,2}:\d{2}/);
+                        if (m) havdalah = m[0];
+                    }
+                });
+
+                document.getElementById('parashaDisplay').innerText = parasha;
+                document.getElementById('candleLightingDisplay').innerText = candles;
+                document.getElementById('havdalahDisplay').innerText = havdalah;
+            } catch (err) {
+                console.error("❌ חסימה בזמני שבת:", err);
+                document.getElementById('parashaDisplay').innerText = "שבת קודש";
+                document.getElementById('candleLightingDisplay').innerText = "18:50 (משוער)";
+                document.getElementById('havdalahDisplay').innerText = "19:45 (משוער)";
             }
 
-            // ג. זמן שקיעה (היום)
+            // שקיעה
             try {
-                const zmanimRes = await fetch(`https://www.hebcal.com/zmanim?cfg=json&geonameid=${cityId}&date=${localDateStr}`);
-                if (zmanimRes.ok) {
-                    const zmanimData = await zmanimRes.json();
-                    if (zmanimData && zmanimData.times && zmanimData.times.sunset) {
-                        const sunsetDate = new Date(zmanimData.times.sunset);
-                        const sunsetStr = sunsetDate.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit', hour12: false });
-                        document.getElementById('sunsetDisplay').innerText = sunsetStr;
-                    }
+                let zRes = await fetch(`https://www.hebcal.com/zmanim?cfg=json&geonameid=${cityId}&date=${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`);
+                let zData = await zRes.json();
+                if (zData.times && zData.times.sunset) {
+                    let sTime = new Date(zData.times.sunset);
+                    document.getElementById('sunsetDisplay').innerText = sTime.toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit', hour12:false});
                 }
-            } catch (error) {
-                console.error("שגיאה בזמן שקיעה:", error);
+            } catch (err) {
+                console.error("❌ חסימה בשקיעה:", err);
+                document.getElementById('sunsetDisplay').innerText = "19:10 (משוער)";
             }
         }
 
-        // --- 3. מערכת ניהול מודעות ומסמכים (Admin System) ---
+        // 3. הבטחה מוחלטת שהפונקציה תופעל ברגע שהדף נטען!
+        fetchHebcalData();
+
+        // --- 3. ניהול לוח מודעות ומסמכים (Admin System) ---
         let isAdminLoggedIn = false;
         const DEFAULT_PASSWORD = "1234";
 
         const initialUpdates = [
             {
                 id: 1,
-                title: "סליחות ותפילות אלול",
-                content: "המניינים מתקיימים כסדרם בבוקר ובערב. הציבור מוזמן!",
+                title: "סליחות ותפילות חודש אלול",
+                content: "המניינים מתקיימים כסדרם בבוקר ובערב. הציבור מוזמן להשתתף!",
                 link: "",
                 date: "אלול"
             },
             {
                 id: 2,
                 title: "עלון שבת הקהילתי",
-                content: "ניתן להוריד ולעיין בעלון השבת המעודכן",
-                link: "https://www.youtube.com/@%D7
+                content: "ניתן לעיין ולהוריד את עלון השבת של בית הכנסת",
+                link: "https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C",
+                date: "שבועי"
+            }
+        ];
+
+        function getUpdates() {
+            const stored = localStorage.getItem('maorei_updates');
+            return stored ? JSON.parse(stored) : initialUpdates;
+        }
+
+        function saveUpdates(updates) {
+            localStorage.setItem('maorei_updates', JSON.stringify(updates));
+            renderUpdates();
+        }
+
+        function renderUpdates() {
+            const updatesList = document.getElementById('updatesList');
+            const updates = getUpdates();
+
+            if (updates.length === 0) {
+                updatesList.innerHTML = '<p style="text-align:center; color:#777;">אין הודעות חדשות כרגע.</p>';
+                return;
+            }
+
+            updatesList.innerHTML = updates.map(item => `
+                <div class="update-item">
+                    <div class="update-info">
+                        <h4>${item.title} <small style="font-size:0.8rem; color:#888;">(${item.date || ''})</small></h4>
+                        <p>${item.content}</p>
+                    </div>
+                    <div class="update-actions">
+                        ${item.link ? `<a href="${item.link}" target="_blank" class="btn" style="padding: 6px 14px; font-size: 0.85rem;"><i class="fas fa-download"></i> פתח קובץ/קישור</a>` : ''}
+                        ${isAdminLoggedIn ? `<button onclick="window.deleteUpdate(${item.id})" class="btn" style="background:#dc3545; color:white; padding: 6px 12px; font-size: 0.85rem;"><i class="fas fa-trash"></i> מחק</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.deleteUpdate = function(id) {
+            if (confirm("האם למחוק הודעה זו?")) {
+                const updates = getUpdates().filter(u => u.id !== id);
+                saveUpdates(updates);
+            }
+        };
+
+        // ניהול מודאל התחברות
+        const loginModal = document.getElementById('loginModal');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const closeModal = document.getElementById('closeModal');
+        const submitLoginBtn = document.getElementById('submitLoginBtn');
+        const adminPanel = document.getElementById('adminPanel');
+
+        adminLoginBtn.addEventListener('click', () => {
+            if (isAdminLoggedIn) {
+                isAdminLoggedIn = false;
+                document.getElementById('adminBtnText').innerText = "התחברות מנהל";
+                adminPanel.style.display = "none";
+                renderUpdates();
+            } else {
+                loginModal.style.display = "flex";
+            }
+        });
+
+        closeModal.addEventListener('click', () => loginModal.style.display = "none");
+
+        submitLoginBtn.addEventListener('click', () => {
+            const pass = document.getElementById('adminPassword').value;
+            if (pass === DEFAULT_PASSWORD) {
+                isAdminLoggedIn = true;
+                loginModal.style.display = "none";
+                document.getElementById('adminBtnText').innerText = "התנתק ממצב מנהל";
+                adminPanel.style.display = "block";
+                document.getElementById('loginError').style.display = "none";
+                document.getElementById('adminPassword').value = "";
+                renderUpdates();
+            } else {
+                document.getElementById('loginError').style.display = "block";
+            }
+        });
+
+        // טופס הוספת מודעה
+        document.getElementById('addUpdateForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const updates = getUpdates();
+            const newUpdate = {
+                id: Date.now(),
+                title: document.getElementById('updateTitle').value,
+                content: document.getElementById('updateContent').value,
+                link: document.getElementById('updateLink').value,
+                date: new Date().toLocaleDateString('he-IL')
+            };
+
+            updates.unshift(newUpdate);
+            saveUpdates(updates);
+
+            document.getElementById('addUpdateForm').reset();
+            alert("ההודעה פורסמה בהצלחה!");
+        });
+
+        // --- 4. הפעלה בטעינה ---
+        renderUpdates();
+        fetchHebcalData();
+        document.addEventListener('DOMContentLoaded', fetchHebcalData);
+    </script>
+</body>
+</html>
