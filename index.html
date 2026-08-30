@@ -529,7 +529,7 @@
 
     <section id="updates">
         <div class="section-title">
-            <h2>עדכונים ופעילויות </h2>
+            <h2>עדכונים ופעילויות</h2>
         </div>
 
         <div class="updates-container">
@@ -560,7 +560,7 @@
             </div>
 
             <div class="updates-list" id="updatesList">
-                </div>
+            </div>
         </div>
     </section>
 
@@ -643,204 +643,101 @@
             navLinks.classList.toggle('active');
         });
 
-        // סגירת התפריט בלחיצה על קישור במובייל
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
             });
         });
 
-      // --- 2. שאיבת נתונים מ-Hebcal (גרסה אוטומטית ויציבה עם Regex) ---
+        // --- 2. שאיבת נתונים אוטומטית מ-Hebcal מותאמת לרחובות ---
         async function fetchHebcalData() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+
+            const monthStr = String(month).padStart(2, '0');
+            const dayStr = String(day).padStart(2, '0');
+            const localDateStr = `${year}-${monthStr}-${dayStr}`;
+
+            const cityId = '293703'; // מזהה רחובות ב-Hebcal
+
+            // א. תאריך עברי
             try {
-                // בניית תאריך מקומי מדויק כדי למנוע סטיות של אזורי זמן (UTC)
-                const today = new Date();
-                const year = today.getFullYear();
-                const monthObj = today.getMonth() + 1;
-                const dayObj = today.getDate();
-                
-                const monthStr = String(monthObj).padStart(2, '0');
-                const dayStr = String(dayObj).padStart(2, '0');
-                const localDateStr = `${year}-${monthStr}-${dayStr}`;
-
-                const cityId = '293703'; // מזהה העיר רחובות במערכת
-
-                // 1. קריאת תאריך עברי
-                const dateRes = await fetch(`https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${monthObj}&gd=${dayObj}&g2h=1`);
-                const dateData = await dateRes.json();
-                document.getElementById('hebrewDateDisplay').innerText = `היום: ${dateData.hebrew} | זמני היום מעודכנים לפי אופק רחובות`;
-
-                // 2. קריאת זמני שבת ופרשה (lg=h מבקש תשובה בעברית)
-                const shabbatRes = await fetch(`https://www.hebcal.com/shabbat?cfg=json&geonameid=${cityId}&M=on&lg=h`);
-                const shabbatData = await shabbatRes.json();
-                
-                let parasha = '', candleLighting = '', havdalah = '';
-                
-                if (shabbatData && shabbatData.items) {
-                    shabbatData.items.forEach(item => {
-                        if (item.category === 'parashat') {
-                            parasha = item.hebrew; // לוקח ישירות את השם העברי
-                        }
-                        if (item.category === 'candles') {
-                            // שימוש בביטוי רגולרי (Regex) לחילוץ השעה במדויק
-                            const match = item.title.match(/\d{1,2}:\d{2}/);
-                            if (match) candleLighting = match[0];
-                        }
-                        if (item.category === 'havdalah') {
-                            const match = item.title.match(/\d{1,2}:\d{2}/);
-                            if (match) havdalah = match[0];
-                        }
-                    });
+                const dateRes = await fetch(`https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${month}&gd=${day}&g2h=1`);
+                if (dateRes.ok) {
+                    const dateData = await dateRes.json();
+                    if (dateData && dateData.hebrew) {
+                        document.getElementById('hebrewDateDisplay').innerText = `היום: ${dateData.hebrew} | זמני היום מעודכנים לפי אופק רחובות`;
+                    }
                 }
-                
-                // עדכון התצוגה רק אם מצאנו נתונים
-                if(parasha) document.getElementById('parashaDisplay').innerText = parasha;
-                if(candleLighting) document.getElementById('candleLightingDisplay').innerText = candleLighting;
-                if(havdalah) document.getElementById('havdalahDisplay').innerText = havdalah;
-
-                // 3. קריאת זמן שקיעה (היום)
-                const zmanimRes = await fetch(`https://www.hebcal.com/zmanim?cfg=json&geonameid=${cityId}&date=${localDateStr}`);
-                const zmanimData = await zmanimRes.json();
-                
-                if (zmanimData.times && zmanimData.times.sunset) {
-                    const sunsetDate = new Date(zmanimData.times.sunset);
-                    document.getElementById('sunsetDisplay').innerText = sunsetDate.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
-                }
-
             } catch (error) {
-                console.error("שגיאת תקשורת מול ה-API:", error);
-                // במקרה של שגיאה - נציג אותה כדי להבין מה חוסם אותנו
-                document.getElementById('hebrewDateDisplay').innerText = "שגיאת תקשורת: " + error.message;
-                document.getElementById('parashaDisplay').innerText = "שגיאה";
-                document.getElementById('candleLightingDisplay').innerText = "שגיאה";
-                document.getElementById('havdalahDisplay').innerText = "שגיאה";
-                document.getElementById('sunsetDisplay').innerText = "שגיאה";
+                console.error("שגיאה בתאריך עברי:", error);
+            }
+
+            // ב. זמני שבת ופרשת השבוע
+            try {
+                const shabbatRes = await fetch(`https://www.hebcal.com/shabbat?cfg=json&geonameid=${cityId}&M=on&lg=h`);
+                if (shabbatRes.ok) {
+                    const shabbatData = await shabbatRes.json();
+                    if (shabbatData && shabbatData.items) {
+                        let parasha = '';
+                        let candleLighting = '';
+                        let havdalah = '';
+
+                        shabbatData.items.forEach(item => {
+                            if (item.category === 'parashat') {
+                                parasha = item.hebrew || item.title;
+                            }
+                            if (item.category === 'candles') {
+                                const match = (item.hebrew || item.title).match(/\d{1,2}:\d{2}/);
+                                if (match) candleLighting = match[0];
+                            }
+                            if (item.category === 'havdalah') {
+                                const match = (item.hebrew || item.title).match(/\d{1,2}:\d{2}/);
+                                if (match) havdalah = match[0];
+                            }
+                        });
+
+                        if (parasha) document.getElementById('parashaDisplay').innerText = parasha;
+                        if (candleLighting) document.getElementById('candleLightingDisplay').innerText = candleLighting;
+                        if (havdalah) document.getElementById('havdalahDisplay').innerText = havdalah;
+                    }
+                }
+            } catch (error) {
+                console.error("שגיאה בזמני שבת:", error);
+            }
+
+            // ג. זמן שקיעה (היום)
+            try {
+                const zmanimRes = await fetch(`https://www.hebcal.com/zmanim?cfg=json&geonameid=${cityId}&date=${localDateStr}`);
+                if (zmanimRes.ok) {
+                    const zmanimData = await zmanimRes.json();
+                    if (zmanimData && zmanimData.times && zmanimData.times.sunset) {
+                        const sunsetDate = new Date(zmanimData.times.sunset);
+                        const sunsetStr = sunsetDate.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit', hour12: false });
+                        document.getElementById('sunsetDisplay').innerText = sunsetStr;
+                    }
+                }
+            } catch (error) {
+                console.error("שגיאה בזמן שקיעה:", error);
             }
         }
+
         // --- 3. מערכת ניהול מודעות ומסמכים (Admin System) ---
         let isAdminLoggedIn = false;
         const DEFAULT_PASSWORD = "1234";
 
-        // נתונים ראשוניים לדוגמה (אם אין ב-localStorage)
         const initialUpdates = [
             {
                 id: 1,
                 title: "סליחות ותפילות אלול",
                 content: "המניינים מתקיימים כסדרם בבוקר ובערב. הציבור מוזמן!",
                 link: "",
-                date: "אלול תשפ\"ו"
+                date: "אלול"
             },
             {
                 id: 2,
                 title: "עלון שבת הקהילתי",
                 content: "ניתן להוריד ולעיין בעלון השבת המעודכן",
-                link: "https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C",
-                date: "שבועי"
-            }
-        ];
-
-        function getUpdates() {
-            const stored = localStorage.getItem('maorei_updates');
-            return stored ? JSON.parse(stored) : initialUpdates;
-        }
-
-        function saveUpdates(updates) {
-            localStorage.setItem('maorei_updates', JSON.stringify(updates));
-            renderUpdates();
-        }
-
-        function renderUpdates() {
-            const updatesList = document.getElementById('updatesList');
-            const updates = getUpdates();
-
-            if (updates.length === 0) {
-                updatesList.innerHTML = '<p style="text-align:center; color:#777;">אין הודעות חדשות כרגע.</p>';
-                return;
-            }
-
-            updatesList.innerHTML = updates.map(item => `
-                <div class="update-item">
-                    <div class="update-info">
-                        <h4>${item.title} <small style="font-size:0.8rem; color:#888;">(${item.date || ''})</small></h4>
-                        <p>${item.content}</p>
-                    </div>
-                    <div class="update-actions">
-                        ${item.link ? `<a href="${item.link}" target="_blank" class="btn" style="padding: 6px 14px; font-size: 0.85rem;"><i class="fas fa-download"></i> פתח קובץ/קישור</a>` : ''}
-                        ${isAdminLoggedIn ? `<button onclick="deleteUpdate(${item.id})" class="btn" style="background:#dc3545; color:white; padding: 6px 12px; font-size: 0.85rem;"><i class="fas fa-trash"></i> מחק</button>` : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function deleteUpdate(id) {
-            if (confirm("האם למחוק הודעה זו?")) {
-                const updates = getUpdates().filter(u => u.id !== id);
-                saveUpdates(updates);
-            }
-        }
-
-        // ניהול מודאל להתחברות
-        const loginModal = document.getElementById('loginModal');
-        const adminLoginBtn = document.getElementById('adminLoginBtn');
-        const closeModal = document.getElementById('closeModal');
-        const submitLoginBtn = document.getElementById('submitLoginBtn');
-        const adminPanel = document.getElementById('adminPanel');
-
-        adminLoginBtn.addEventListener('click', () => {
-            if (isAdminLoggedIn) {
-                // התנתקות
-                isAdminLoggedIn = false;
-                document.getElementById('adminBtnText').innerText = "התחברות מנהל";
-                adminPanel.style.display = "none";
-                renderUpdates();
-            } else {
-                loginModal.style.display = "flex";
-            }
-        });
-
-        closeModal.addEventListener('click', () => loginModal.style.display = "none");
-
-        submitLoginBtn.addEventListener('click', () => {
-            const pass = document.getElementById('adminPassword').value;
-            if (pass === DEFAULT_PASSWORD) {
-                isAdminLoggedIn = true;
-                loginModal.style.display = "none";
-                document.getElementById('adminBtnText').innerText = "התנתק ממצב מנהל";
-                adminPanel.style.display = "block";
-                document.getElementById('loginError').style.display = "none";
-                document.getElementById('adminPassword').value = "";
-                renderUpdates();
-            } else {
-                document.getElementById('loginError').style.display = "block";
-            }
-        });
-
-        // הוספת הודעה חדשה
-        document.getElementById('addUpdateForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const title = document.getElementById('updateTitle').value;
-            const content = document.getElementById('updateContent').value;
-            const link = document.getElementById('updateLink').value;
-
-            const updates = getUpdates();
-            const newUpdate = {
-                id: Date.now(),
-                title: title,
-                content: content,
-                link: link,
-                date: new Date().toLocaleDateString('he-IL')
-            };
-
-            updates.unshift(newUpdate);
-            saveUpdates(updates);
-
-            // איפוס הטופס
-            document.getElementById('addUpdateForm').reset();
-            alert("ההודעה פורסמה בהצלחה!");
-        });
-
-        // טעינה ראשונית של המודעות
-        renderUpdates();
-    </script>
-</body>
-</html>
+                link: "https://www.youtube.com/@%D7
