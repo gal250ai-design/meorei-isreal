@@ -4,14 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>בית כנסת מאורי ישראל - רחובות הצעירה</title>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #6a1a21; /* צבע בורדו מהתמונות */
-            --secondary-color: #d4af37; /* צבע זהב */
-            --bg-color: #fcf8f2; /* צבע קלף עדין */
-            --text-color: #333;
+            --primary-color: #6a1a21; /* בורדו */
+            --secondary-color: #d4af37; /* זהב */
+            --bg-color: #fcf8f2; /* קלף */
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --accent-gold: #b8860b;
+        }
+
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -20,16 +27,17 @@
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
+            line-height: 1.6;
         }
 
+        /* Header & Nav */
         header {
             background-color: var(--primary-color);
             color: white;
-            padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
         }
 
         nav {
@@ -38,13 +46,16 @@
             align-items: center;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 12px 20px;
         }
 
         .logo {
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 700;
             color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .nav-links {
@@ -53,6 +64,7 @@
             gap: 20px;
             margin: 0;
             padding: 0;
+            align-items: center;
         }
 
         .nav-links a {
@@ -60,130 +72,330 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
         }
 
         .nav-links a:hover {
             color: var(--secondary-color);
+            background-color: rgba(255,255,255,0.08);
         }
 
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* Live Date Bar */
+        .hebrew-date-bar {
+            background-color: #521319;
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 6px 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* Hero */
         .hero {
             text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(rgba(106, 26, 33, 0.9), rgba(106, 26, 33, 0.9)), url('path_to_your_synagogue_image.jpg') center/cover;
+            padding: 70px 20px 50px;
+            background: linear-gradient(rgba(106, 26, 33, 0.92), rgba(106, 26, 33, 0.92)), url('path_to_your_synagogue_image.jpg') center/cover;
             color: white;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
+            font-size: 2.8rem;
+            margin: 0 0 10px;
             color: var(--secondary-color);
+            letter-spacing: 1px;
+        }
+
+        .hero .rabbis {
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+            color: #ffe699;
+            font-weight: 500;
         }
 
         .hero h3 {
             font-weight: 300;
             margin-bottom: 30px;
-        }
-
-        .hero .rabbis {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            color: #ffd700;
+            font-size: 1.3rem;
         }
 
         .btn {
             background-color: var(--secondary-color);
             color: var(--primary-color);
-            padding: 12px 25px;
+            padding: 12px 26px;
             text-decoration: none;
             border-radius: 25px;
-            font-weight: bold;
-            display: inline-block;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             margin: 5px;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
         .btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+            background-color: #e5be48;
         }
 
+        /* Main Container */
         section {
             padding: 50px 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        h2 {
-            color: var(--primary-color);
+        .section-title {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
+        }
+
+        .section-title h2 {
+            color: var(--primary-color);
             font-size: 2rem;
-            border-bottom: 2px solid var(--secondary-color);
+            margin: 0;
             display: inline-block;
-            padding-bottom: 10px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 20%;
+            left: 20%;
+            height: 3px;
+            background-color: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        /* Live Shabbat & Prayer Cards */
+        .shabbat-box {
+            background: linear-gradient(135deg, #ffffff 0%, #fffdf8 100%);
+            border: 2px solid var(--secondary-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .shabbat-item {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .shabbat-item h4 {
+            margin: 0 0 5px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .shabbat-item .val {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--accent-gold);
         }
 
         .schedule-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
         }
 
         .schedule-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            background: var(--card-bg);
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
             text-align: center;
-            border-top: 4px solid var(--primary-color);
+            border-top: 5px solid var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .schedule-card:hover {
+            transform: translateY(-4px);
         }
 
         .schedule-card h4 {
             color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.25rem;
+            margin: 0 0 10px;
         }
 
         .time {
             font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--text-color);
+            font-weight: 700;
+            color: #222;
         }
 
         .note {
             font-size: 0.9rem;
             color: #666;
-            margin-top: 5px;
+            margin-top: 8px;
         }
 
+        /* Updates & Admin Section */
+        .updates-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .updates-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .updates-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .update-item {
+            background: var(--bg-color);
+            padding: 18px 22px;
+            border-radius: 8px;
+            border-right: 4px solid var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .update-info h4 {
+            margin: 0 0 5px;
+            color: var(--primary-color);
+            font-size: 1.15rem;
+        }
+
+        .update-info p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .update-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: inherit;
+        }
+
+        /* Rabbi Section */
         .rabbi-section {
             background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 35px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             text-align: center;
-            margin-top: 30px;
         }
 
+        /* Gallery */
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 15px;
         }
 
         .gallery img {
             width: 100%;
-            height: 200px;
+            height: 220px;
             object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
         }
 
+        .gallery img:hover {
+            transform: scale(1.03);
+        }
+
+        /* Footer */
         footer {
             background-color: var(--primary-color);
             color: white;
             text-align: center;
-            padding: 30px 20px;
-            margin-top: 50px;
+            padding: 35px 20px;
+            margin-top: 60px;
         }
 
         .social-links {
@@ -192,8 +404,8 @@
 
         .social-links a {
             color: white;
-            font-size: 1.5rem;
-            margin: 0 10px;
+            font-size: 1.6rem;
+            margin: 0 12px;
             transition: color 0.3s;
         }
 
@@ -201,11 +413,34 @@
             color: var(--secondary-color);
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none; /* אפשר להוסיף תפריט המבורגר בהמשך */
+            .hamburger {
+                display: block;
             }
-            .hero h1 { font-size: 2.2rem; }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                left: 0;
+                background-color: var(--primary-color);
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero h1 { font-size: 2.1rem; }
+            .hero h3 { font-size: 1.1rem; }
+            
+            .shabbat-box {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -213,34 +448,66 @@
 
     <header>
         <nav>
-            <div class="logo"><i class="fas fa-fire"></i> מאורי ישראל</div>
-            <ul class="nav-links">
+            <div class="logo">
+                <i class="fas fa-fire"></i> מאורי ישראל
+            </div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="תפריט">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#times">זמני תפילה</a></li>
+                <li><a href="#updates">עדכונים ופעילויות</a></li>
                 <li><a href="#about">אודות ורב הקהילה</a></li>
                 <li><a href="#gallery">גלריה</a></li>
                 <li><a href="#donate">תרומות</a></li>
             </ul>
         </nav>
+        <div class="hebrew-date-bar" id="hebrewDateDisplay">
+            טוען תאריך עברי וזמני היום...
+        </div>
     </header>
 
     <div class="hero">
         <h1>קהילת מאורי ישראל</h1>
-        <h3>רחובות הצעירה - נוסח עדות המזרח</h3>
         <div class="rabbis">
             על שם הרבנים זצוק"ל<br>
             הרב מרדכי אליהו | הרב עובדיה יוסף | הרב יורם אברג'ל
         </div>
-        <a href="#times" class="btn">לזמני התפילות</a>
+        <h3>שכונת רחובות הצעירה - נוסח עדות המזרח</h3>
+
+        <a href="#times" class="btn"><i class="far fa-clock"></i> לזמני התפילות</a>
         <a href="https://chat.whatsapp.com/DGLLkRJHyhv4mwzmIy9EOK?s=hd&p=i&mlu=4" target="_blank" class="btn" style="background-color: #25D366; color: white;"><i class="fab fa-whatsapp"></i> קבוצת העדכונים</a>
     </div>
 
     <section id="times">
-        <center><h2>זמני תפילות - חול</h2></center>
+        <div class="section-title">
+            <h2>זמני תפילה וזמני היום (רחובות)</h2>
+        </div>
+
+        <div class="shabbat-box">
+            <div class="shabbat-item">
+                <h4>פרשת השבוע</h4>
+                <div class="val" id="parashaDisplay">טוען...</div>
+            </div>
+            <div class="shabbat-item">
+                <h4>כניסת שבת</h4>
+                <div class="val" id="candleLightingDisplay">טוען...</div>
+            </div>
+            <div class="shabbat-item">
+                <h4>יציאת שבת</h4>
+                <div class="val" id="havdalahDisplay">טוען...</div>
+            </div>
+            <div class="shabbat-item">
+                <h4>שקיעה (היום)</h4>
+                <div class="val" id="sunsetDisplay">טוען...</div>
+            </div>
+        </div>
+
         <div class="schedule-grid">
             <div class="schedule-card">
-                <h4>סליחות</h4>
+                <h4>סליחות (אלול/תשובה)</h4>
                 <div class="time">05:10 | 18:05</div>
-                <div class="note">בימי חודש אלול ועשרת ימי תשובה</div>
+                <div class="note">לפני שחרית ומנחה</div>
             </div>
             <div class="schedule-card">
                 <h4>שחרית</h4>
@@ -250,51 +517,309 @@
             <div class="schedule-card">
                 <h4>מנחה</h4>
                 <div class="time">סמוך לשקיעה</div>
-                <div class="note">לצורך המחשה: 19:00</div>
+                <div class="note">לפי זמן השקיעה היומי</div>
             </div>
             <div class="schedule-card">
-                <h4>ערבית</h4>
+                <h4>ערבית ושיעור תורה</h4>
                 <div class="time">בזמן השקיעה</div>
-                <div class="note">לצורך המחשה: 19:30 <br><strong>מיד לאחר מכן - שיעור תורה</strong></div>
+                <div class="note">מיד לאחר ערבית - שיעור תורה מפי הרב</div>
             </div>
+        </div>
+    </section>
+
+    <section id="updates">
+        <div class="section-title">
+            <h2>עדכונים ופעילויות </h2>
+        </div>
+
+        <div class="updates-container">
+            <div class="updates-header">
+                <h3>לוח מודעות וקבצים לקהילה</h3>
+                <button class="btn" id="adminLoginBtn" style="font-size: 0.9rem; padding: 8px 16px;">
+                    <i class="fas fa-user-shield"></i> <span id="adminBtnText">התחברות מנהל</span>
+                </button>
+            </div>
+
+            <div id="adminPanel" style="display: none; background: #f0e6d2; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="margin-top: 0; color: var(--primary-color);">הוספת הודעה / מסמך חדש</h4>
+                <form id="addUpdateForm">
+                    <div class="form-group">
+                        <label>כותרת ההודעה / מסמך:</label>
+                        <input type="text" id="updateTitle" required placeholder="לדוגמה: עלון שבת פרשת כי תצא / לוז חגים">
+                    </div>
+                    <div class="form-group">
+                        <label>תוכן / פירוט:</label>
+                        <textarea id="updateContent" rows="2" placeholder="פרטים נוספים לקהילה..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>קישור לקובץ / דרייב (אופציונלי):</label>
+                        <input type="url" id="updateLink" placeholder="https://drive.google.com/...">
+                    </div>
+                    <button type="submit" class="btn"><i class="fas fa-plus"></i> פרסם מודעה</button>
+                </form>
+            </div>
+
+            <div class="updates-list" id="updatesList">
+                </div>
         </div>
     </section>
 
     <section id="about">
-        <center><h2>אודות הקהילה</h2></center>
+        <div class="section-title">
+            <h2>אודות הקהילה</h2>
+        </div>
         <div class="rabbi-section">
-            <h3>הרב שי וקנין</h3>
-            <p>קהילת "מאורי ישראל" מתנהלת באווירה חמה ומשפחתית, בנוסח עדות המזרח, תחת הנהגתו של רב הקהילה, הרב שי וקנין. בכל ערב לאחר תפילת ערבית מתקיים שיעור תורה מפי הרב.</p>
-            <a href="https://www.youtube.com/@shay_vaknin/videos" target="_blank" class="btn" style="background-color: #FF0000; color: white; margin-top: 15px;"><i class="fab fa-youtube"></i> לערוץ היוטיוב של בית הכנסת מאורי ישראל</a>
-			<a href="https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" class="btn" style="background-color: #FF0000; color: white; margin-top: 15px;"><i class="fab fa-youtube"></i> לערוץ היוטיוב של הרב</a>
+            <h3 style="color: var(--primary-color); font-size: 1.6rem; margin-top: 0;">מנהיג הקהילה - הרב שי וקנין שליט"א</h3>
+            <p style="max-width: 800px; margin: 15px auto; font-size: 1.1rem;">
+                קהילת "מאורי ישראל" בשכונת רחובות הצעירה מתאפיינת באווירה חמה, משפחתית ומזמינה. 
+                התפילות מתקיימות בנוסח עדות המזרח, ובכל ערב לאחר תפילת ערבית מתקיים שיעור תורה מרתק מפי רב בית הכנסת, הרב שי וקנין.
+            </p>
+            <div style="margin-top: 25px;">
+                <a href="https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" class="btn" style="background-color: #FF0000; color: white;">
+                    <i class="fab fa-youtube"></i> יוטיוב בית הכנסת
+                </a>
+                <a href="https://www.youtube.com/@shay_vaknin/videos" target="_blank" class="btn" style="background-color: #FF0000; color: white;">
+                    <i class="fab fa-youtube"></i> ערוץ השיעורים של הרב
+                </a>
+            </div>
         </div>
     </section>
 
     <section id="gallery">
-        <center><h2>גלריית תמונות</h2></center>
+        <div class="section-title">
+            <h2>גלריית תמונות</h2>
+        </div>
         <div class="gallery">
-            <!-- יש להחליף את הקישורים לתמונות אמיתיות שיועלו לגיטהאב -->
-            <img src="https://via.placeholder.com/300x200/fcf8f2/6a1a21?text=תמונה+1" alt="תמונה מהקהילה">
-            <img src="https://via.placeholder.com/300x200/fcf8f2/6a1a21?text=תמונה+2" alt="תמונה מהקהילה">
-            <img src="https://via.placeholder.com/300x200/fcf8f2/6a1a21?text=תמונה+3" alt="תמונה מהקהילה">
+            <img src="https://via.placeholder.com/400x300/fcf8f2/6a1a21?text=מאורי+ישראל+1" alt="תמונה מהקהילה">
+            <img src="https://via.placeholder.com/400x300/fcf8f2/6a1a21?text=מאורי+ישראל+2" alt="תמונה מהקהילה">
+            <img src="https://via.placeholder.com/400x300/fcf8f2/6a1a21?text=מאורי+ישראל+3" alt="תמונה מהקהילה">
+            <img src="https://via.placeholder.com/400x300/fcf8f2/6a1a21?text=מאורי+ישראל+4" alt="תמונה מהקהילה">
         </div>
     </section>
 
     <section id="donate">
-        <center><h2>שותפות ותרומות</h2></center>
-        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-            <p>הקהילה שלנו מתפתחת וגדלה בזכות השותפות שלכם. ניתן להעביר תרומות, דמי חבר, או פדיון כפרות בצורה מאובטחת דרך מערכת MyGabay.</p>
-            <a href="https://mygabay.com/YOUR_SYNAGOGUE_LINK" target="_blank" class="btn" style="font-size: 1.2rem; padding: 15px 30px; margin-top: 20px;"><i class="fas fa-hand-holding-heart"></i> לתרומה מאובטחת</a>
+        <div class="section-title">
+            <h2>שותפות ותרומות</h2>
+        </div>
+        <div style="text-align: center; max-width: 650px; margin: 0 auto; background: white; padding: 35px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <i class="fas fa-torah" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 15px;"></i>
+            <p style="font-size: 1.1rem; margin-bottom: 25px;">
+                בית הכנסת ומרכז הקהילתי פועל בזכות השותפות והתמיכה שלכם. 
+                ניתן להעביר תרומות, דמי חבר, קניית עליות ופדיון כפרות בצורה מאובטחת דרך מערכת MyGabay.
+            </p>
+            <a href="https://mygabay.com/YOUR_SYNAGOGUE_LINK" target="_blank" class="btn" style="font-size: 1.2rem; padding: 14px 32px;">
+                <i class="fas fa-hand-holding-heart"></i> מעבר לתרומה מאובטחת ב-MyGabay
+            </a>
         </div>
     </section>
 
     <footer>
         <p>© 2026 קהילת מאורי ישראל - רחובות הצעירה. כל הזכויות שמורות.</p>
         <div class="social-links">
-            <a href="https://chat.whatsapp.com/DGLLkRJHyhv4mwzmIy9EOK?s=hd&p=i&mlu=4" target="_blank"><i class="fab fa-whatsapp"></i></a>
-            <a href="https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://chat.whatsapp.com/DGLLkRJHyhv4mwzmIy9EOK?s=hd&p=i&mlu=4" target="_blank" title="ווטסאפ"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" title="יוטיוב"><i class="fab fa-youtube"></i></a>
         </div>
     </footer>
 
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h3 style="color: var(--primary-color); margin-top: 0;">התחברות מנהל אתר</h3>
+            <div class="form-group">
+                <label>הזן סיסמה:</label>
+                <input type="password" id="adminPassword" placeholder="הזן סיסמה (ברירת מחדל: 1234)">
+            </div>
+            <button class="btn" id="submitLoginBtn" style="width: 100%;">התחבר</button>
+            <p id="loginError" style="color: red; display: none; margin-top: 10px; font-size: 0.9rem;">סיסמה שגויה!</p>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. תפריט המבורגר רספונסיבי ---
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburgerBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // סגירת התפריט בלחיצה על קישור במובייל
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // --- 2. שאיבת זמני היום ותאריך עברי מ-Hebcal API עבור רחובות ---
+        async function fetchHebcalData() {
+            try {
+                // א. זמני שבת ופרשה עבור רחובות
+                const shabbatRes = await fetch('https://www.hebcal.com/shabbat?cfg=json&city=IL-Rehovot&b=18&M=on');
+                const shabbatData = await shabbatRes.json();
+
+                let parasha = '';
+                let candleLighting = '';
+                let havdalah = '';
+
+                shabbatData.items.forEach(item => {
+                    if (item.category === 'parashat') parasha = item.hebrew || item.title;
+                    if (item.category === 'candles') candleLighting = item.title.split(': ')[1] || item.title;
+                    if (item.category === 'havdalah') havdalah = item.title.split(': ')[1] || item.title;
+                });
+
+                document.getElementById('parashaDisplay').innerText = parasha || 'שבת קודש';
+                document.getElementById('candleLightingDisplay').innerText = candleLighting || '--:--';
+                document.getElementById('havdalahDisplay').innerText = havdalah || '--:--';
+
+                // ב. זמני היום (שקיעה ותאריך עברי)
+                const today = new Date().toISOString().split('T')[0];
+                const zmanimRes = await fetch(`https://www.hebcal.com/zmanim?cfg=json&city=IL-Rehovot&date=${today}`);
+                const zmanimData = await zmanimRes.json();
+
+                if (zmanimData.times && zmanimData.times.sunset) {
+                    const sunsetDate = new Date(zmanimData.times.sunset);
+                    const sunsetStr = sunsetDate.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+                    document.getElementById('sunsetDisplay').innerText = sunsetStr;
+                }
+
+                // ג. תאריך עברי של היום
+                const dateRes = await fetch(`https://www.hebcal.com/converter?cfg=json&gy=${new Date().getFullYear()}&gm=${new Date().getMonth()+1}&gd=${new Date().getDate()}&g2h=1`);
+                const dateData = await dateRes.json();
+                document.getElementById('hebrewDateDisplay').innerText = `היום: ${dateData.hebrew} | זמני היום מעודכנים לפי אופק רחובות`;
+
+            } catch (err) {
+                console.error('שגיאה בטעינת זמני היום:', err);
+                document.getElementById('hebrewDateDisplay').innerText = 'ברוכים הבאים לבית הכנסת מאורי ישראל - רחובות הצעירה';
+                document.getElementById('parashaDisplay').innerText = 'שבת קודש';
+            }
+        }
+
+        fetchHebcalData();
+
+        // --- 3. מערכת ניהול מודעות ומסמכים (Admin System) ---
+        let isAdminLoggedIn = false;
+        const DEFAULT_PASSWORD = "1234";
+
+        // נתונים ראשוניים לדוגמה (אם אין ב-localStorage)
+        const initialUpdates = [
+            {
+                id: 1,
+                title: "סליחות ותפילות אלול",
+                content: "המניינים מתקיימים כסדרם בבוקר ובערב. הציבור מוזמן!",
+                link: "",
+                date: "אלול תשפ\"ו"
+            },
+            {
+                id: 2,
+                title: "עלון שבת הקהילתי",
+                content: "ניתן להוריד ולעיין בעלון השבת המעודכן",
+                link: "https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C",
+                date: "שבועי"
+            }
+        ];
+
+        function getUpdates() {
+            const stored = localStorage.getItem('maorei_updates');
+            return stored ? JSON.parse(stored) : initialUpdates;
+        }
+
+        function saveUpdates(updates) {
+            localStorage.setItem('maorei_updates', JSON.stringify(updates));
+            renderUpdates();
+        }
+
+        function renderUpdates() {
+            const updatesList = document.getElementById('updatesList');
+            const updates = getUpdates();
+
+            if (updates.length === 0) {
+                updatesList.innerHTML = '<p style="text-align:center; color:#777;">אין הודעות חדשות כרגע.</p>';
+                return;
+            }
+
+            updatesList.innerHTML = updates.map(item => `
+                <div class="update-item">
+                    <div class="update-info">
+                        <h4>${item.title} <small style="font-size:0.8rem; color:#888;">(${item.date || ''})</small></h4>
+                        <p>${item.content}</p>
+                    </div>
+                    <div class="update-actions">
+                        ${item.link ? `<a href="${item.link}" target="_blank" class="btn" style="padding: 6px 14px; font-size: 0.85rem;"><i class="fas fa-download"></i> פתח קובץ/קישור</a>` : ''}
+                        ${isAdminLoggedIn ? `<button onclick="deleteUpdate(${item.id})" class="btn" style="background:#dc3545; color:white; padding: 6px 12px; font-size: 0.85rem;"><i class="fas fa-trash"></i> מחק</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteUpdate(id) {
+            if (confirm("האם למחוק הודעה זו?")) {
+                const updates = getUpdates().filter(u => u.id !== id);
+                saveUpdates(updates);
+            }
+        }
+
+        // ניהול מודאל להתחברות
+        const loginModal = document.getElementById('loginModal');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const closeModal = document.getElementById('closeModal');
+        const submitLoginBtn = document.getElementById('submitLoginBtn');
+        const adminPanel = document.getElementById('adminPanel');
+
+        adminLoginBtn.addEventListener('click', () => {
+            if (isAdminLoggedIn) {
+                // התנתקות
+                isAdminLoggedIn = false;
+                document.getElementById('adminBtnText').innerText = "התחברות מנהל";
+                adminPanel.style.display = "none";
+                renderUpdates();
+            } else {
+                loginModal.style.display = "flex";
+            }
+        });
+
+        closeModal.addEventListener('click', () => loginModal.style.display = "none");
+
+        submitLoginBtn.addEventListener('click', () => {
+            const pass = document.getElementById('adminPassword').value;
+            if (pass === DEFAULT_PASSWORD) {
+                isAdminLoggedIn = true;
+                loginModal.style.display = "none";
+                document.getElementById('adminBtnText').innerText = "התנתק ממצב מנהל";
+                adminPanel.style.display = "block";
+                document.getElementById('loginError').style.display = "none";
+                document.getElementById('adminPassword').value = "";
+                renderUpdates();
+            } else {
+                document.getElementById('loginError').style.display = "block";
+            }
+        });
+
+        // הוספת הודעה חדשה
+        document.getElementById('addUpdateForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('updateTitle').value;
+            const content = document.getElementById('updateContent').value;
+            const link = document.getElementById('updateLink').value;
+
+            const updates = getUpdates();
+            const newUpdate = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                link: link,
+                date: new Date().toLocaleDateString('he-IL')
+            };
+
+            updates.unshift(newUpdate);
+            saveUpdates(updates);
+
+            // איפוס הטופס
+            document.getElementById('addUpdateForm').reset();
+            alert("ההודעה פורסמה בהצלחה!");
+        });
+
+        // טעינה ראשונית של המודעות
+        renderUpdates();
+    </script>
 </body>
 </html>
