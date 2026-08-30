@@ -650,77 +650,73 @@
             });
         });
 
-        // --- 2. שאיבת זמני היום ותאריך עברי מ-Hebcal API עבור רחובות ---
-      // --- 2. שאיבת זמני היום ותאריך עברי מ-Hebcal API עבור רחובות (לפי קואורדינטות) ---
+      // --- 2. שאיבת נתונים מ-Hebcal (גרסה אוטומטית ויציבה עם Regex) ---
         async function fetchHebcalData() {
             try {
-                // קואורדינטות מדויקות של רחובות כדי למנוע שגיאות זיהוי
-                const lat = 31.8928;
-                const lng = 34.8113;
-                const tzid = 'Asia/Jerusalem';
-
-                // א. זמני שבת ופרשה
-                const shabbatUrl = `https://www.hebcal.com/shabbat?cfg=json&geo=pos&latitude=${lat}&longitude=${lng}&tzid=${tzid}&M=on`;
-                const shabbatRes = await fetch(shabbatUrl);
+                // בניית תאריך מקומי מדויק כדי למנוע סטיות של אזורי זמן (UTC)
+                const today = new Date();
+                const year = today.getFullYear();
+                const monthObj = today.getMonth() + 1;
+                const dayObj = today.getDate();
                 
-                if (!shabbatRes.ok) throw new Error(`Shabbat API Error: ${shabbatRes.status}`);
-                const shabbatData = await shabbatRes.json();
+                const monthStr = String(monthObj).padStart(2, '0');
+                const dayStr = String(dayObj).padStart(2, '0');
+                const localDateStr = `${year}-${monthStr}-${dayStr}`;
 
-                let parasha = '';
-                let candleLighting = '';
-                let havdalah = '';
+                const cityId = '293703'; // מזהה העיר רחובות במערכת
 
-                if (shabbatData.items) {
-                    shabbatData.items.forEach(item => {
-                        if (item.category === 'parashat') parasha = item.hebrew || item.title;
-                        if (item.category === 'candles') candleLighting = item.title.split(': ')[1] || item.title;
-                        if (item.category === 'havdalah') havdalah = item.title.split(': ')[1] || item.title;
-                    });
-                }
-
-                document.getElementById('parashaDisplay').innerText = parasha || 'שבת קודש';
-                document.getElementById('candleLightingDisplay').innerText = candleLighting || '--:--';
-                document.getElementById('havdalahDisplay').innerText = havdalah || '--:--';
-
-                // ב. זמני היום (שקיעה)
-                const today = new Date().toISOString().split('T')[0];
-                const zmanimUrl = `https://www.hebcal.com/zmanim?cfg=json&geo=pos&latitude=${lat}&longitude=${lng}&tzid=${tzid}&date=${today}`;
-                const zmanimRes = await fetch(zmanimUrl);
-                
-                if (!zmanimRes.ok) throw new Error(`Zmanim API Error: ${zmanimRes.status}`);
-                const zmanimData = await zmanimRes.json();
-
-                if (zmanimData.times && zmanimData.times.sunset) {
-                    const sunsetDate = new Date(zmanimData.times.sunset);
-                    const sunsetStr = sunsetDate.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
-                    document.getElementById('sunsetDisplay').innerText = sunsetStr;
-                } else {
-                    document.getElementById('sunsetDisplay').innerText = '--:--';
-                }
-
-                // ג. תאריך עברי של היום
-                const year = new Date().getFullYear();
-                const month = new Date().getMonth() + 1;
-                const day = new Date().getDate();
-                const dateUrl = `https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${month}&gd=${day}&g2h=1`;
-                const dateRes = await fetch(dateUrl);
-                
-                if (!dateRes.ok) throw new Error(`Date API Error: ${dateRes.status}`);
+                // 1. קריאת תאריך עברי
+                const dateRes = await fetch(`https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${monthObj}&gd=${dayObj}&g2h=1`);
                 const dateData = await dateRes.json();
-                
                 document.getElementById('hebrewDateDisplay').innerText = `היום: ${dateData.hebrew} | זמני היום מעודכנים לפי אופק רחובות`;
 
-            } catch (err) {
-                console.error('שגיאה בטעינת הנתונים מ-Hebcal:', err);
-                // במקרה של שגיאה - ננקה את ה"טוען..." כדי שהממשק לא ייראה תקוע
-                document.getElementById('hebrewDateDisplay').innerText = 'ברוכים הבאים לבית הכנסת מאורי ישראל - רחובות הצעירה';
-                document.getElementById('parashaDisplay').innerText = 'שבת קודש';
-                document.getElementById('candleLightingDisplay').innerText = '--:--';
-                document.getElementById('havdalahDisplay').innerText = '--:--';
-                document.getElementById('sunsetDisplay').innerText = '--:--';
+                // 2. קריאת זמני שבת ופרשה (lg=h מבקש תשובה בעברית)
+                const shabbatRes = await fetch(`https://www.hebcal.com/shabbat?cfg=json&geonameid=${cityId}&M=on&lg=h`);
+                const shabbatData = await shabbatRes.json();
+                
+                let parasha = '', candleLighting = '', havdalah = '';
+                
+                if (shabbatData && shabbatData.items) {
+                    shabbatData.items.forEach(item => {
+                        if (item.category === 'parashat') {
+                            parasha = item.hebrew; // לוקח ישירות את השם העברי
+                        }
+                        if (item.category === 'candles') {
+                            // שימוש בביטוי רגולרי (Regex) לחילוץ השעה במדויק
+                            const match = item.title.match(/\d{1,2}:\d{2}/);
+                            if (match) candleLighting = match[0];
+                        }
+                        if (item.category === 'havdalah') {
+                            const match = item.title.match(/\d{1,2}:\d{2}/);
+                            if (match) havdalah = match[0];
+                        }
+                    });
+                }
+                
+                // עדכון התצוגה רק אם מצאנו נתונים
+                if(parasha) document.getElementById('parashaDisplay').innerText = parasha;
+                if(candleLighting) document.getElementById('candleLightingDisplay').innerText = candleLighting;
+                if(havdalah) document.getElementById('havdalahDisplay').innerText = havdalah;
+
+                // 3. קריאת זמן שקיעה (היום)
+                const zmanimRes = await fetch(`https://www.hebcal.com/zmanim?cfg=json&geonameid=${cityId}&date=${localDateStr}`);
+                const zmanimData = await zmanimRes.json();
+                
+                if (zmanimData.times && zmanimData.times.sunset) {
+                    const sunsetDate = new Date(zmanimData.times.sunset);
+                    document.getElementById('sunsetDisplay').innerText = sunsetDate.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+                }
+
+            } catch (error) {
+                console.error("שגיאת תקשורת מול ה-API:", error);
+                // במקרה של שגיאה - נציג אותה כדי להבין מה חוסם אותנו
+                document.getElementById('hebrewDateDisplay').innerText = "שגיאת תקשורת: " + error.message;
+                document.getElementById('parashaDisplay').innerText = "שגיאה";
+                document.getElementById('candleLightingDisplay').innerText = "שגיאה";
+                document.getElementById('havdalahDisplay').innerText = "שגיאה";
+                document.getElementById('sunsetDisplay').innerText = "שגיאה";
             }
         }
-
         // --- 3. מערכת ניהול מודעות ומסמכים (Admin System) ---
         let isAdminLoggedIn = false;
         const DEFAULT_PASSWORD = "1234";
