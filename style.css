@@ -1,4 +1,291 @@
-/* --- עיצוב פורום הקהילה --- */
+/* =========================================
+   הגדרות בסיס ומשתנים
+========================================= */
+:root {
+    --primary-color: #006b8f; /* טורקיז-כחול עמוק */
+    --secondary-color: #e5b842; /* זהב */
+    --bg-color: #f0f7f9; /* תכלת בהיר מאוד לרקע */
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --accent-gold: #c59c27; /* זהב כהה לטקסט */
+    --danger-color: #dc3545; /* אדום למחיקה */
+    --success-color: #28a745; /* ירוק להצלחה */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Heebo', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    direction: rtl;
+}
+
+a { text-decoration: none; }
+ul { list-style: none; }
+
+/* =========================================
+   כפתורים כלליים
+========================================= */
+.btn {
+    background-color: var(--secondary-color);
+    color: #003b50;
+    padding: 10px 24px;
+    border-radius: 25px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    background-color: #ffd257;
+}
+
+/* =========================================
+   תפריט עליון (Header & Nav)
+========================================= */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 20px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: white;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+.nav-links a:hover {
+    color: var(--secondary-color);
+    background-color: rgba(255,255,255,0.08);
+}
+
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.hebrew-date-bar {
+    background-color: #004d66;
+    color: var(--secondary-color);
+    text-align: center;
+    padding: 6px 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(229, 184, 66, 0.3);
+}
+
+/* =========================================
+   אזור פתיחה (Hero)
+========================================= */
+.hero {
+    text-align: center;
+    padding: 70px 20px 50px;
+    background: linear-gradient(rgba(0, 107, 143, 0.95), rgba(0, 107, 143, 0.95));
+    color: white;
+}
+
+.hero h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+    letter-spacing: 1px;
+}
+
+.hero .rabbis {
+    font-size: 1.15rem;
+    margin-bottom: 20px;
+    color: #ffeba1;
+    font-weight: 500;
+}
+
+.hero h3 {
+    font-weight: 300;
+    margin-bottom: 30px;
+    font-size: 1.3rem;
+}
+
+.hero .btn {
+    margin: 5px;
+}
+
+/* =========================================
+   מבנה כללי לאזורים (Sections)
+========================================= */
+section {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-title h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.section-title h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 20%;
+    left: 20%;
+    height: 3px;
+    background-color: var(--secondary-color);
+    border-radius: 2px;
+}
+
+/* =========================================
+   זמני תפילה
+========================================= */
+.shabbat-box {
+    background: linear-gradient(135deg, #ffffff 0%, #f4fbfd 100%);
+    border: 2px solid var(--secondary-color);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 35px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.shabbat-item { flex: 1; min-width: 150px; }
+.shabbat-item h4 { margin-bottom: 5px; color: var(--primary-color); font-size: 1.1rem; }
+.shabbat-item .val { font-size: 1.6rem; font-weight: bold; color: var(--accent-gold); }
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.schedule-card {
+    background: var(--card-bg);
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    text-align: center;
+    border-top: 5px solid var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.schedule-card:hover { transform: translateY(-4px); }
+.schedule-card h4 { color: var(--primary-color); font-size: 1.25rem; margin-bottom: 10px; }
+.time { font-size: 1.5rem; font-weight: 700; color: var(--text-color); }
+.note { font-size: 0.9rem; color: #666; margin-top: 8px; }
+
+/* =========================================
+   עדכונים ופעילויות
+========================================= */
+.updates-container {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.updates-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.updates-list { display: grid; gap: 15px; }
+
+.update-item {
+    background: var(--bg-color);
+    padding: 18px 22px;
+    border-radius: 8px;
+    border-right: 4px solid var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.update-info h4 { margin-bottom: 5px; color: var(--primary-color); font-size: 1.15rem; }
+.update-info p { font-size: 0.95rem; color: #555; }
+.update-actions { display: flex; gap: 10px; align-items: center; }
+
+/* חלון הוספת עדכון (למנהל) */
+.admin-panel-form {
+    background: #e6f2f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border: 1px solid #cce4eb;
+}
+
+.admin-panel-form h4 { color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem; }
+
+/* =========================================
+   קיר הקהילה (הפורום)
+========================================= */
 .forum-container {
     background: white;
     border-radius: 12px;
@@ -10,11 +297,13 @@
 
 .auth-panel {
     background: var(--bg-color);
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     border: 1px solid #d1e5eb;
 }
+
+.auth-panel p { margin-bottom: 15px; font-weight: 500; color: var(--primary-color); }
 
 .auth-forms {
     display: flex;
@@ -24,18 +313,20 @@
 }
 
 .auth-forms input {
-    padding: 8px;
+    padding: 10px 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
     flex: 1;
     min-width: 150px;
+    font-family: inherit;
+    font-size: 1rem;
 }
 
 .user-panel {
     background: #e8f5e9;
-    padding: 15px;
+    padding: 15px 20px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -45,67 +336,221 @@
 .post-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--bg-color);
+    padding-bottom: 25px;
+    border-bottom: 2px solid #eee;
 }
 
 .post-form input, .post-form textarea {
     width: 100%;
-    padding: 12px;
+    padding: 12px 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-family: inherit;
+    font-size: 1rem;
     resize: vertical;
 }
 
-.messages-feed {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.post-form textarea:focus, .post-form input:focus {
+    outline: none;
+    border-color: var(--primary-color);
 }
+
+.messages-feed { display: flex; flex-direction: column; gap: 15px; }
 
 .message-card {
     background: #fdfdfd;
     border: 1px solid #eee;
     border-right: 4px solid var(--primary-color);
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
     position: relative;
+    transition: box-shadow 0.2s;
 }
+
+.message-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 
 .message-card .msg-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-size: 0.9rem;
+    align-items: center;
 }
 
-.message-card .msg-author {
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-.message-card .msg-date {
-    color: #888;
-}
-
-.message-card .msg-content {
-    margin: 0;
-    color: #444;
-    white-space: pre-wrap;
-}
+.message-card .msg-author { font-weight: 600; color: var(--primary-color); display: flex; align-items: center; gap: 6px; }
+.message-card .msg-date { color: #888; font-size: 0.85rem; }
+.message-card .msg-content { margin: 0; color: #333; white-space: pre-wrap; line-height: 1.5; padding-bottom: 20px; }
 
 .delete-msg-btn {
     position: absolute;
     bottom: 10px;
     left: 10px;
-    background: #dc3545;
+    background: var(--danger-color);
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 4px 8px;
+    padding: 5px 12px;
     cursor: pointer;
     font-size: 0.8rem;
+    transition: background 0.2s;
+}
+
+.delete-msg-btn:hover { background: #c82333; }
+
+/* =========================================
+   אודות, גלריה ותרומות
+========================================= */
+.rabbi-section {
+    background-color: white;
+    padding: 35px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+
+.gallery-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+
+.gallery-card:hover { transform: translateY(-4px); }
+.gallery-card i { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px; }
+.gallery-card h4 { color: var(--primary-color); margin-bottom: 8px; font-size: 1.2rem; }
+.gallery-card p { font-size: 0.95rem; color: #666; margin: 0; }
+
+.donate-box {
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.bank-details {
+    background: var(--bg-color);
+    padding: 25px;
+    border-radius: 10px;
+    border: 2px solid var(--secondary-color);
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.bank-details h4 { color: var(--primary-color); margin-bottom: 15px; font-size: 1.25rem; }
+.bank-details p { font-size: 1.15rem; margin: 8px 0; }
+
+.cash-details {
+    background: var(--bg-color);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid var(--primary-color);
+    text-align: right;
+}
+
+.cash-details h4 { color: var(--primary-color); margin-bottom: 10px; font-size: 1.15rem; }
+.cash-details p { font-size: 1.1rem; margin: 0; }
+
+/* =========================================
+   מודל (חלון קופץ)
+========================================= */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+}
+
+.form-group { margin-bottom: 15px; text-align: right; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: var(--primary-color); }
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+/* =========================================
+   פוטר (Footer)
+========================================= */
+footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 60px;
+}
+
+.social-links { margin-top: 20px; }
+.social-links a { color: white; font-size: 1.8rem; margin: 0 12px; transition: color 0.3s; }
+.social-links a:hover { color: var(--secondary-color); }
+
+/* =========================================
+   התאמה למובייל (Responsive)
+========================================= */
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        background-color: var(--primary-color);
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    }
+    .nav-links.active { display: flex; }
+    
+    .hero h1 { font-size: 2.1rem; }
+    .hero h3 { font-size: 1.1rem; }
+    
+    .shabbat-box { flex-direction: column; }
+    
+    /* סידור טפסים בפורום למובייל */
+    .auth-forms { flex-direction: column; align-items: stretch; }
+    .auth-forms input, .auth-forms button { width: 100%; margin-bottom: 5px; }
+    
+    .updates-header { flex-direction: column; align-items: flex-start; }
+    .update-item { flex-direction: column; align-items: flex-start; }
+    .update-actions { width: 100%; justify-content: space-between; margin-top: 10px; }
 }
