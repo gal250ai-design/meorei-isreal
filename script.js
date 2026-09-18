@@ -1,193 +1,25 @@
 // ==========================================
-// 1. הגדרות Firebase - חובה להכניס את הקוד שלך כאן!
+// 1. תפריט מובייל
 // ==========================================
-const firebaseConfig = {
-  apiKey: "AIzaSyC5mTjRvWKThlVOIXppdfO9HFaihc6c0tc",
-  authDomain: "meroreisrael.firebaseapp.com",
-  projectId: "meroreisrael",
-  storageBucket: "meroreisrael.firebasestorage.app",
-  messagingSenderId: "344922413694",
-  appId: "1:344922413694:web:344357a5418229aedb162f",
-  measurementId: "G-FW3B3CNDVJ"
-};
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const navLinks = document.getElementById('navLinks');
 
-// אתחול Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
-
-// === הגדרת אימייל מנהל האתר ===
-// הכנס כאן את המייל שאיתו תירשם לאתר. המערכת תזהה אותך ותיתן לך הרשאת מחיקת הודעות.
-const ADMIN_EMAIL = "gal@example.com"; 
-
-// ==========================================
-// 2. פונקציות הפורום (קיר הקהילה)
-// ==========================================
-const authPanel = document.getElementById('authPanel');
-const userPanel = document.getElementById('userPanel');
-const loggedInUserEmail = document.getElementById('loggedInUserEmail');
-const adminBadge = document.getElementById('adminBadge');
-const messagesFeed = document.getElementById('messagesFeed');
-const postError = document.getElementById('postError');
-
-let currentUser = null;
-let isAdmin = false;
-
-// האזנה למצב התחברות (מי מחובר כרגע)
-auth.onAuthStateChanged(user => {
-    if (user) {
-        currentUser = user;
-        authPanel.style.display = 'none';
-        userPanel.style.display = 'flex';
-        loggedInUserEmail.innerText = user.email;
-        
-        // בדיקת הרשאת מנהל
-        if (user.email === ADMIN_EMAIL) {
-            isAdmin = true;
-            adminBadge.style.display = 'inline';
-        } else {
-            isAdmin = false;
-            adminBadge.style.display = 'none';
-        }
-    } else {
-        currentUser = null;
-        isAdmin = false;
-        authPanel.style.display = 'block';
-        userPanel.style.display = 'none';
-    }
-    loadMessages(); // טעינת הודעות מחדש כדי להציג/להסתיר כפתורי מחיקה למנהל
-});
-
-// הרשמה
-document.getElementById('registerBtn').addEventListener('click', () => {
-    const email = document.getElementById('userEmail').value;
-    const pass = document.getElementById('userPass').value;
-    auth.createUserWithEmailAndPassword(email, pass)
-        .catch(error => document.getElementById('authError').innerText = "שגיאה בהרשמה: " + error.message)
-        .then(() => { document.getElementById('authError').innerText = ""; });
-    document.getElementById('authError').style.display = 'block';
-});
-
-// התחברות
-document.getElementById('loginBtn').addEventListener('click', () => {
-    const email = document.getElementById('userEmail').value;
-    const pass = document.getElementById('userPass').value;
-    auth.signInWithEmailAndPassword(email, pass)
-        .catch(error => document.getElementById('authError').innerText = "שגיאה בהתחברות: " + error.message)
-        .then(() => { document.getElementById('authError').innerText = ""; });
-    document.getElementById('authError').style.display = 'block';
-});
-
-// התנתקות
-document.getElementById('logoutBtn').addEventListener('click', () => {
-    auth.signOut();
-});
-
-// פרסום הודעה לקיר (כולל הגבלת ספאם לאורחים)
-document.getElementById('submitPostBtn').addEventListener('click', async () => {
-    postError.style.display = 'none';
-    const authorName = document.getElementById('postAuthorName').value.trim();
-    const content = document.getElementById('postContent').value.trim();
-
-    if (!authorName || !content) {
-        postError.innerText = "נא למלא שם ותוכן הודעה.";
-        postError.style.display = 'block';
-        return;
-    }
-
-    // בדיקת הגבלת 5 דקות לאורחים לא רשומים
-    if (!currentUser) {
-        const lastPostTime = localStorage.getItem('lastGuestPostTime');
-        if (lastPostTime) {
-            const timePassed = Date.now() - parseInt(lastPostTime);
-            const minutesLeft = Math.ceil((300000 - timePassed) / 60000); // 300,000ms = 5 mins
-            if (timePassed < 300000) {
-                postError.innerText = `אורחים מוגבלים בפרסום. תוכל לפרסם שוב בעוד כ-${minutesLeft} דקות, או התחבר כדי לפרסם ללא הגבלה.`;
-                postError.style.display = 'block';
-                return;
-            }
-        }
-    }
-
-    try {
-        await db.collection('messages').add({
-            author: authorName,
-            content: content,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            uid: currentUser ? currentUser.uid : 'guest'
-        });
-
-        // עדכון זמן פרסום אחרון לאורחים כדי למנוע ספאם
-        if (!currentUser) {
-            localStorage.setItem('lastGuestPostTime', Date.now().toString());
-        }
-
-        document.getElementById('postContent').value = '';
-    } catch (error) {
-        postError.innerText = "שגיאה בפרסום ההודעה. ודא שהגדרות ה-Firestore מאפשרות כתיבה.";
-        postError.style.display = 'block';
-        console.error(error);
-    }
-});
-
-// טעינת הודעות בזמן אמת ממסד הנתונים
-function loadMessages() {
-    db.collection('messages').orderBy('timestamp', 'desc').limit(50)
-      .onSnapshot(snapshot => {
-          messagesFeed.innerHTML = '';
-          if (snapshot.empty) {
-              messagesFeed.innerHTML = '<p style="text-align:center;">אין עדיין הודעות בקיר. היה הראשון לכתוב!</p>';
-              return;
-          }
-
-          snapshot.forEach(doc => {
-              const msg = doc.data();
-              const date = msg.timestamp ? msg.timestamp.toDate().toLocaleString('he-IL') : 'ממש עכשיו';
-              
-              let deleteBtnHtml = '';
-              // אם המשתמש המחובר הוא המנהל, נציג לו כפתור מחיקה
-              if (isAdmin) {
-                  deleteBtnHtml = `<button class="delete-msg-btn" onclick="deleteMessage('${doc.id}')"><i class="fas fa-trash"></i> מחיקה (מנהל)</button>`;
-              }
-
-              messagesFeed.innerHTML += `
-                  <div class="message-card">
-                      <div class="msg-header">
-                          <span class="msg-author"><i class="fas fa-user-circle"></i> ${msg.author}</span>
-                          <span class="msg-date">${date}</span>
-                      </div>
-                      <p class="msg-content">${msg.content}</p>
-                      ${deleteBtnHtml}
-                  </div>
-              `;
-          });
-      });
+if(hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
 }
 
-// פונקציית מחיקה (חשופה ל-window כדי שהכפתור ב-HTML יזהה אותה)
-window.deleteMessage = function(docId) {
-    if (confirm('האם אתה בטוח שברצונך למחוק הודעה זו?')) {
-        db.collection('messages').doc(docId).delete()
-          .catch(error => alert("שגיאה במחיקת הודעה: " + error));
-    }
-};
-
-
-// ==========================================
-// 3. תפריט מובייל
-// ==========================================
-document.getElementById('hamburgerBtn').addEventListener('click', () => {
-    document.getElementById('navLinks').classList.toggle('active');
-});
-
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        document.getElementById('navLinks').classList.remove('active');
+if(navLinks) {
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
     });
-});
+}
 
 // ==========================================
-// 4. זמני תפילה אוטומטיים (Hebcal API) 
+// 2. זמני תפילה (Hebcal) - חסין שגיאות
 // ==========================================
 async function fetchHebcalData() {
     const cityId = '293703'; // רחובות
@@ -196,11 +28,17 @@ async function fetchHebcalData() {
 
     try {
         let res = await fetch(`https://www.hebcal.com/converter?cfg=json&gy=${d.getFullYear()}&gm=${d.getMonth()+1}&gd=${d.getDate()}&g2h=1`);
-        document.getElementById('hebrewDateDisplay').innerText = `היום: ${(await res.json()).hebrew} | מעודכן לפי אופק רחובות`;
-    } catch { document.getElementById('hebrewDateDisplay').innerText = "מציג זמנים משוערים"; }
+        let data = await res.json();
+        if(document.getElementById('hebrewDateDisplay')) {
+            document.getElementById('hebrewDateDisplay').innerText = `היום: ${data.hebrew} | מעודכן לפי אופק רחובות`;
+        }
+    } catch {
+        if(document.getElementById('hebrewDateDisplay')) document.getElementById('hebrewDateDisplay').innerText = "מציג זמנים משוערים";
+    }
 
     try {
-        let shabbatData = await (await fetch(`https://www.hebcal.com/shabbat?cfg=json&geonameid=${cityId}&M=on&lg=h`)).json();
+        let shabbatRes = await fetch(`https://www.hebcal.com/shabbat?cfg=json&geonameid=${cityId}&M=on&lg=h`);
+        let shabbatData = await shabbatRes.json();
         let parasha="שבת קודש", candles="18:50 (משוער)", havdalah="19:45 (משוער)";
         
         shabbatData.items.forEach(i => {
@@ -209,15 +47,244 @@ async function fetchHebcalData() {
             if (i.category === 'havdalah') havdalah = (i.hebrew || i.title).match(/\d{1,2}:\d{2}/)?.[0] || havdalah;
         });
 
-        document.getElementById('parashaDisplay').innerText = parasha;
-        document.getElementById('candleLightingDisplay').innerText = candles;
-        document.getElementById('havdalahDisplay').innerText = havdalah;
+        if(document.getElementById('parashaDisplay')) document.getElementById('parashaDisplay').innerText = parasha;
+        if(document.getElementById('candleLightingDisplay')) document.getElementById('candleLightingDisplay').innerText = candles;
+        if(document.getElementById('havdalahDisplay')) document.getElementById('havdalahDisplay').innerText = havdalah;
     } catch {}
 
     try {
-        let zData = await (await fetch(`https://www.hebcal.com/zmanim?cfg=json&geonameid=${cityId}&date=${ds}`)).json();
-        if (zData.times?.sunset) document.getElementById('sunsetDisplay').innerText = new Date(zData.times.sunset).toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit'});
+        let zRes = await fetch(`https://www.hebcal.com/zmanim?cfg=json&geonameid=${cityId}&date=${ds}`);
+        let zData = await zRes.json();
+        if (zData.times?.sunset && document.getElementById('sunsetDisplay')) {
+            document.getElementById('sunsetDisplay').innerText = new Date(zData.times.sunset).toLocaleTimeString('he-IL', {hour:'2-digit', minute:'2-digit', hour12:false});
+        }
     } catch {}
 }
 
+// הפעלת הזמנים מיד כשנטען
 document.addEventListener('DOMContentLoaded', fetchHebcalData);
+
+// ==========================================
+// 3. ניהול לוח מודעות (Local Storage Admin)
+// ==========================================
+let isLocalAdminLoggedIn = false;
+const LOCAL_ADMIN_PASSWORD = "1234";
+
+const initialUpdates = [
+    { id: 1, title: "סליחות ותפילות חודש אלול", content: "המניינים מתקיימים כסדרם בבוקר ובערב.", link: "", date: "אלול" }
+];
+
+function getUpdates() {
+    const stored = localStorage.getItem('maorei_updates');
+    return stored ? JSON.parse(stored) : initialUpdates;
+}
+
+function saveUpdates(updates) {
+    localStorage.setItem('maorei_updates', JSON.stringify(updates));
+    renderUpdates();
+}
+
+function renderUpdates() {
+    const updatesList = document.getElementById('updatesList');
+    if(!updatesList) return;
+    
+    const updates = getUpdates();
+    if (updates.length === 0) {
+        updatesList.innerHTML = '<p style="text-align:center; color:#777;">אין הודעות חדשות כרגע.</p>';
+        return;
+    }
+
+    updatesList.innerHTML = updates.map(item => `
+        <div class="update-item">
+            <div class="update-info">
+                <h4>${item.title} <small style="color:#888;">(${item.date || ''})</small></h4>
+                <p>${item.content}</p>
+            </div>
+            <div class="update-actions">
+                ${item.link ? `<a href="${item.link}" target="_blank" class="btn"><i class="fas fa-download"></i> פתח</a>` : ''}
+                ${isLocalAdminLoggedIn ? `<button onclick="window.deleteUpdate(${item.id})" class="btn" style="background:#dc3545; color:white;"><i class="fas fa-trash"></i></button>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+window.deleteUpdate = function(id) {
+    if (confirm("למחוק הודעה זו?")) {
+        saveUpdates(getUpdates().filter(u => u.id !== id));
+    }
+};
+
+const adminLoginBtn = document.getElementById('adminLoginBtn');
+if(adminLoginBtn) {
+    adminLoginBtn.addEventListener('click', () => {
+        if (isLocalAdminLoggedIn) {
+            isLocalAdminLoggedIn = false;
+            document.getElementById('adminBtnText').innerText = "התחברות מנהל";
+            document.getElementById('adminPanel').style.display = "none";
+            renderUpdates();
+        } else {
+            document.getElementById('loginModal').style.display = "flex";
+        }
+    });
+}
+
+const closeModalBtn = document.getElementById('closeModal');
+if(closeModalBtn) {
+    closeModalBtn.addEventListener('click', () => document.getElementById('loginModal').style.display = "none");
+}
+
+const submitLoginBtn = document.getElementById('submitLoginBtn');
+if(submitLoginBtn) {
+    submitLoginBtn.addEventListener('click', () => {
+        if (document.getElementById('adminPassword').value === LOCAL_ADMIN_PASSWORD) {
+            isLocalAdminLoggedIn = true;
+            document.getElementById('loginModal').style.display = "none";
+            document.getElementById('adminBtnText').innerText = "התנתק ממצב מנהל";
+            document.getElementById('adminPanel').style.display = "block";
+            document.getElementById('loginError').style.display = "none";
+            document.getElementById('adminPassword').value = "";
+            renderUpdates();
+        } else {
+            document.getElementById('loginError').style.display = "block";
+        }
+    });
+}
+
+const addUpdateForm = document.getElementById('addUpdateForm');
+if(addUpdateForm) {
+    addUpdateForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const updates = getUpdates();
+        updates.unshift({
+            id: Date.now(),
+            title: document.getElementById('updateTitle').value,
+            content: document.getElementById('updateContent').value,
+            link: document.getElementById('updateLink').value,
+            date: new Date().toLocaleDateString('he-IL')
+        });
+        saveUpdates(updates);
+        addUpdateForm.reset();
+        alert("פורסם!");
+    });
+}
+renderUpdates();
+
+// ==========================================
+// 4. פורום Firebase 
+// ==========================================
+
+// --- חובה להכניס את מפתח ה-Firebase שלך כאן! ---
+const firebaseConfig = {
+    apiKey: "הכנס-את-שלך-כאן",
+    authDomain: "הכנס-את-שלך-כאן",
+    projectId: "הכנס-את-שלך-כאן",
+    storageBucket: "הכנס-את-שלך-כאן",
+    messagingSenderId: "הכנס-את-שלך-כאן",
+    appId: "הכנס-את-שלך-כאן"
+};
+
+const ADMIN_EMAIL = "gal@example.com"; 
+
+try {
+    // בדיקה אם הוכנס מפתח תקין כדי לא להפיל את האתר
+    if(firebaseConfig.apiKey !== "הכנס-את-שלך-כאן" && typeof firebase !== 'undefined') {
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        let currentUser = null;
+        let isAdmin = false;
+
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            if (user) {
+                document.getElementById('authPanel').style.display = 'none';
+                document.getElementById('userPanel').style.display = 'flex';
+                document.getElementById('loggedInUserEmail').innerText = user.email;
+                isAdmin = (user.email === ADMIN_EMAIL);
+                document.getElementById('adminBadge').style.display = isAdmin ? 'inline' : 'none';
+            } else {
+                isAdmin = false;
+                document.getElementById('authPanel').style.display = 'block';
+                document.getElementById('userPanel').style.display = 'none';
+            }
+            loadMessages();
+        });
+
+        document.getElementById('registerBtn').addEventListener('click', () => {
+            const email = document.getElementById('userEmail').value;
+            const pass = document.getElementById('userPass').value;
+            auth.createUserWithEmailAndPassword(email, pass)
+                .catch(err => document.getElementById('authError').innerText = err.message);
+            document.getElementById('authError').style.display = 'block';
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const email = document.getElementById('userEmail').value;
+            const pass = document.getElementById('userPass').value;
+            auth.signInWithEmailAndPassword(email, pass)
+                .catch(err => document.getElementById('authError').innerText = err.message);
+            document.getElementById('authError').style.display = 'block';
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => auth.signOut());
+
+        document.getElementById('submitPostBtn').addEventListener('click', async () => {
+            const errEl = document.getElementById('postError');
+            errEl.style.display = 'none';
+            const author = document.getElementById('postAuthorName').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+
+            if (!author || !content) { errEl.innerText = "חסר שם או תוכן"; errEl.style.display = 'block'; return; }
+
+            if (!currentUser) {
+                const lastPost = localStorage.getItem('lastGuestPostTime');
+                if (lastPost && (Date.now() - parseInt(lastPost) < 300000)) {
+                    errEl.innerText = `אורחים יכולים לפרסם פעם ב-5 דקות. המתן או התחבר.`;
+                    errEl.style.display = 'block';
+                    return;
+                }
+            }
+
+            try {
+                await db.collection('messages').add({
+                    author: author, content: content,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    uid: currentUser ? currentUser.uid : 'guest'
+                });
+                if (!currentUser) localStorage.setItem('lastGuestPostTime', Date.now().toString());
+                document.getElementById('postContent').value = '';
+            } catch (err) {
+                errEl.innerText = "שגיאת שמירה במסד הנתונים.";
+                errEl.style.display = 'block';
+            }
+        });
+
+        function loadMessages() {
+            db.collection('messages').orderBy('timestamp', 'desc').limit(50)
+              .onSnapshot(snapshot => {
+                  const feed = document.getElementById('messagesFeed');
+                  feed.innerHTML = snapshot.empty ? '<p style="text-align:center;">אין הודעות.</p>' : '';
+                  snapshot.forEach(doc => {
+                      const msg = doc.data();
+                      const date = msg.timestamp ? msg.timestamp.toDate().toLocaleString('he-IL') : 'עכשיו';
+                      const delBtn = isAdmin ? `<button class="delete-msg-btn" onclick="window.deleteForumMsg('${doc.id}')"><i class="fas fa-trash"></i></button>` : '';
+                      feed.innerHTML += `
+                          <div class="message-card">
+                              <div class="msg-header"><strong><i class="fas fa-user-circle"></i> ${msg.author}</strong> <span>${date}</span></div>
+                              <p class="msg-content">${msg.content}</p>
+                              ${delBtn}
+                          </div>`;
+                  });
+              });
+        }
+
+        window.deleteForumMsg = function(id) {
+            if(confirm('למחוק?')) db.collection('messages').doc(id).delete();
+        };
+
+    } else {
+        document.getElementById('messagesFeed').innerHTML = '<p style="text-align:center; color:red;">הפורום דורש חיבור ל-Firebase. אנא הכנס את המפתח בקובץ script.js</p>';
+    }
+} catch(e) { console.error("Firebase Error:", e); }
