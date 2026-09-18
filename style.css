@@ -1,0 +1,111 @@
+/* --- עיצוב פורום הקהילה --- */
+.forum-container {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.auth-panel {
+    background: var(--bg-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #d1e5eb;
+}
+
+.auth-forms {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.auth-forms input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+    min-width: 150px;
+}
+
+.user-panel {
+    background: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #c8e6c9;
+}
+
+.post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--bg-color);
+}
+
+.post-form input, .post-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.messages-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message-card {
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    border-right: 4px solid var(--primary-color);
+    padding: 15px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.message-card .msg-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.message-card .msg-author {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.message-card .msg-date {
+    color: #888;
+}
+
+.message-card .msg-content {
+    margin: 0;
+    color: #444;
+    white-space: pre-wrap;
+}
+
+.delete-msg-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
