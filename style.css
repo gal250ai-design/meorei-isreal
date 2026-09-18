@@ -1,15 +1,12 @@
-/* =========================================
-   הגדרות בסיס ומשתנים
-========================================= */
 :root {
-    --primary-color: #006b8f; /* טורקיז-כחול עמוק */
-    --secondary-color: #e5b842; /* זהב */
-    --bg-color: #f0f7f9; /* תכלת בהיר מאוד לרקע */
+    --primary-color: #006b8f; 
+    --secondary-color: #e5b842; 
+    --bg-color: #f0f7f9; 
     --card-bg: #ffffff;
     --text-color: #333333;
-    --accent-gold: #c59c27; /* זהב כהה לטקסט */
-    --danger-color: #dc3545; /* אדום למחיקה */
-    --success-color: #28a745; /* ירוק להצלחה */
+    --accent-gold: #c59c27; 
+    --danger-color: #dc3545; 
+    --success-color: #28a745; 
 }
 
 * {
@@ -30,9 +27,6 @@ body {
 a { text-decoration: none; }
 ul { list-style: none; }
 
-/* =========================================
-   כפתורים כלליים
-========================================= */
 .btn {
     background-color: var(--secondary-color);
     color: #003b50;
@@ -57,9 +51,6 @@ ul { list-style: none; }
     background-color: #ffd257;
 }
 
-/* =========================================
-   תפריט עליון (Header & Nav)
-========================================= */
 header {
     background-color: var(--primary-color);
     color: white;
@@ -125,9 +116,6 @@ nav {
     border-bottom: 1px solid rgba(229, 184, 66, 0.3);
 }
 
-/* =========================================
-   אזור פתיחה (Hero)
-========================================= */
 .hero {
     text-align: center;
     padding: 70px 20px 50px;
@@ -159,9 +147,6 @@ nav {
     margin: 5px;
 }
 
-/* =========================================
-   מבנה כללי לאזורים (Sections)
-========================================= */
 section {
     padding: 60px 20px;
     max-width: 1200px;
@@ -192,9 +177,6 @@ section {
     border-radius: 2px;
 }
 
-/* =========================================
-   זמני תפילה
-========================================= */
 .shabbat-box {
     background: linear-gradient(135deg, #ffffff 0%, #f4fbfd 100%);
     border: 2px solid var(--secondary-color);
@@ -235,9 +217,6 @@ section {
 .time { font-size: 1.5rem; font-weight: 700; color: var(--text-color); }
 .note { font-size: 0.9rem; color: #666; margin-top: 8px; }
 
-/* =========================================
-   עדכונים ופעילויות
-========================================= */
 .updates-container {
     background: white;
     border-radius: 12px;
@@ -272,7 +251,6 @@ section {
 .update-info p { font-size: 0.95rem; color: #555; }
 .update-actions { display: flex; gap: 10px; align-items: center; }
 
-/* חלון הוספת עדכון (למנהל) */
 .admin-panel-form {
     background: #e6f2f5;
     padding: 20px;
@@ -283,9 +261,6 @@ section {
 
 .admin-panel-form h4 { color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem; }
 
-/* =========================================
-   קיר הקהילה (הפורום)
-========================================= */
 .forum-container {
     background: white;
     border-radius: 12px;
@@ -399,9 +374,6 @@ section {
 
 .delete-msg-btn:hover { background: #c82333; }
 
-/* =========================================
-   אודות, גלריה ותרומות
-========================================= */
 .rabbi-section {
     background-color: white;
     padding: 35px 25px;
@@ -460,9 +432,6 @@ section {
 .cash-details h4 { color: var(--primary-color); margin-bottom: 10px; font-size: 1.15rem; }
 .cash-details p { font-size: 1.1rem; margin: 0; }
 
-/* =========================================
-   מודל (חלון קופץ)
-========================================= */
 .modal {
     display: none;
     position: fixed;
@@ -508,9 +477,6 @@ section {
     font-size: 1rem;
 }
 
-/* =========================================
-   פוטר (Footer)
-========================================= */
 footer {
     background-color: var(--primary-color);
     color: white;
@@ -523,9 +489,6 @@ footer {
 .social-links a { color: white; font-size: 1.8rem; margin: 0 12px; transition: color 0.3s; }
 .social-links a:hover { color: var(--secondary-color); }
 
-/* =========================================
-   התאמה למובייל (Responsive)
-========================================= */
 @media (max-width: 768px) {
     .hamburger { display: block; }
     .nav-links {
@@ -540,16 +503,11 @@ footer {
         box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     }
     .nav-links.active { display: flex; }
-    
     .hero h1 { font-size: 2.1rem; }
     .hero h3 { font-size: 1.1rem; }
-    
     .shabbat-box { flex-direction: column; }
-    
-    /* סידור טפסים בפורום למובייל */
     .auth-forms { flex-direction: column; align-items: stretch; }
     .auth-forms input, .auth-forms button { width: 100%; margin-bottom: 5px; }
-    
     .updates-header { flex-direction: column; align-items: flex-start; }
     .update-item { flex-direction: column; align-items: flex-start; }
     .update-actions { width: 100%; justify-content: space-between; margin-top: 10px; }
