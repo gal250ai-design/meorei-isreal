@@ -6,7 +6,7 @@
     <title>בית כנסת מאורי ישראל - רחובות הצעירה</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -21,6 +21,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#times">זמני תפילה</a></li>
                 <li><a href="#forumSection">קיר הקהילה</a></li>
+                <li><a href="#updates">לוח מודעות</a></li>
                 <li><a href="#about">אודות ורב הקהילה</a></li>
                 <li><a href="#donate">תרומות</a></li>
             </ul>
@@ -39,78 +40,237 @@
         <h3>שכונת רחובות הצעירה - נוסח עדות המזרח</h3>
 
         <a href="#times" class="btn"><i class="far fa-clock"></i> לזמני התפילות</a>
-        <a href="#forumSection" class="btn" style="background-color: #f0f7f9; color: var(--primary-color);">
+        <a href="#forumSection" class="btn" style="background-color: var(--bg-color); color: var(--primary-color);">
             <i class="fas fa-comments"></i> קיר הקהילה
         </a>
     </div>
 
-    <!-- ... (כאן נכנס סקשן ה-times כמו מקודם, אין שינוי) ... -->
+    <!-- זמני תפילה -->
     <section id="times">
         <div class="section-title">
             <h2>זמני תפילה וזמני היום (רחובות)</h2>
         </div>
         <div class="shabbat-box">
-            <div class="shabbat-item"><h4>פרשת השבוע</h4><div class="val" id="parashaDisplay">טוען...</div></div>
-            <div class="shabbat-item"><h4>כניסת שבת</h4><div class="val" id="candleLightingDisplay">טוען...</div></div>
-            <div class="shabbat-item"><h4>יציאת שבת</h4><div class="val" id="havdalahDisplay">טוען...</div></div>
-            <div class="shabbat-item"><h4>שקיעה (היום)</h4><div class="val" id="sunsetDisplay">טוען...</div></div>
+            <div class="shabbat-item">
+                <h4>פרשת השבוע</h4>
+                <div class="val" id="parashaDisplay">טוען...</div>
+            </div>
+            <div class="shabbat-item">
+                <h4>כניסת שבת</h4>
+                <div class="val" id="candleLightingDisplay">טוען...</div>
+            </div>
+            <div class="shabbat-item">
+                <h4>יציאת שבת</h4>
+                <div class="val" id="havdalahDisplay">טוען...</div>
+            </div>
+            <div class="shabbat-item">
+                <h4>שקיעה (היום)</h4>
+                <div class="val" id="sunsetDisplay">טוען...</div>
+            </div>
         </div>
         <div class="schedule-grid">
-            <div class="schedule-card"><h4>סליחות (חודש אלול)</h4><div class="time">05:10 | 18:05</div><div class="note">לפני שחרית ומנחה</div></div>
-            <div class="schedule-card"><h4>שחרית</h4><div class="time">06:00</div><div class="note">06:15 - הודו</div></div>
-            <div class="schedule-card"><h4>מנחה</h4><div class="time">סמוך לשקיעה</div><div class="note">לפי זמן השקיעה היומי</div></div>
-            <div class="schedule-card"><h4>ערבית ושיעור תורה</h4><div class="time">בזמן השקיעה</div><div class="note">מיד לאחר ערבית - שיעור תורה מפי הרב</div></div>
+            <div class="schedule-card">
+                <h4>סליחות (חודש אלול)</h4>
+                <div class="time">05:10 | 18:05</div>
+                <div class="note">לפני שחרית ומנחה</div>
+            </div>
+            <div class="schedule-card">
+                <h4>שחרית</h4>
+                <div class="time">06:00</div>
+                <div class="note">06:15 - הודו</div>
+            </div>
+            <div class="schedule-card">
+                <h4>מנחה</h4>
+                <div class="time">סמוך לשקיעה</div>
+                <div class="note">לפי זמן השקיעה היומי</div>
+            </div>
+            <div class="schedule-card">
+                <h4>ערבית ושיעור תורה</h4>
+                <div class="time">בזמן השקיעה</div>
+                <div class="note">מיד לאחר ערבית - שיעור תורה מפי הרב</div>
+            </div>
         </div>
     </section>
 
-    <!-- קיר הקהילה (הפורום החדש) -->
+    <!-- קיר הקהילה (הפורום) -->
     <section id="forumSection">
         <div class="section-title">
             <h2>קיר הודעות הקהילה</h2>
         </div>
         <div class="forum-container">
             
-            <!-- אזור התחברות לפורום -->
             <div class="auth-panel" id="authPanel">
                 <p>התחבר כדי לכתוב ללא הגבלה, או פרסם כאורח (מוגבל להודעה ב-5 דקות).</p>
                 <div class="auth-forms">
                     <input type="email" id="userEmail" placeholder="אימייל">
                     <input type="password" id="userPass" placeholder="סיסמה">
-                    <button class="btn" id="loginBtn" style="padding: 8px 15px;">התחבר</button>
-                    <button class="btn" id="registerBtn" style="padding: 8px 15px; background-color: var(--primary-color); color: white;">הרשמה כמשתמש חדש</button>
+                    <button class="btn" id="loginBtn">התחבר</button>
+                    <button class="btn" id="registerBtn" style="background-color: var(--primary-color); color: white;">הרשמה חדשה</button>
                 </div>
-                <p id="authError" style="color: red; display: none; margin-top: 10px; font-size: 0.9rem;"></p>
+                <p id="authError" style="color: var(--danger-color); display: none; margin-top: 10px; font-size: 0.9rem;"></p>
             </div>
 
-            <!-- הודעת שלום למשתמש מחובר -->
             <div class="user-panel" id="userPanel" style="display: none;">
                 <p>שלום, <strong id="loggedInUserEmail"></strong> <span id="adminBadge" style="display:none; color:var(--accent-gold);">(מנהל)</span></p>
-                <button class="btn" id="logoutBtn" style="padding: 5px 10px; font-size: 0.8rem;">התנתק</button>
+                <button class="btn" id="logoutBtn" style="padding: 6px 12px; font-size: 0.85rem; background-color: var(--primary-color); color: white;">התנתק</button>
             </div>
 
-            <!-- טופס הוספת הודעה לקיר -->
             <div class="post-form">
                 <input type="text" id="postAuthorName" placeholder="השם שלך (יופיע בפורום)" required>
                 <textarea id="postContent" rows="3" placeholder="כתוב הודעה לקהילה..." required></textarea>
                 <button class="btn" id="submitPostBtn"><i class="fas fa-paper-plane"></i> פרסם הודעה</button>
-                <p id="postError" style="color: red; display: none; margin-top: 10px; font-size: 0.9rem;"></p>
+                <p id="postError" style="color: var(--danger-color); display: none; margin-top: 10px; font-size: 0.9rem;"></p>
             </div>
 
-            <!-- רשימת ההודעות -->
             <div class="messages-feed" id="messagesFeed">
-                <p style="text-align:center;">טוען הודעות...</p>
+                <p style="text-align:center;">טוען הודעות משרת הקהילה...</p>
             </div>
         </div>
     </section>
 
-    <!-- ... (המשך סקשנים של About, Gallery, Donate, Footer כפי שהיו) ... -->
+    <!-- עדכונים ולוח מודעות (מנוהל) -->
+    <section id="updates">
+        <div class="section-title">
+            <h2>לוח מודעות מנהל</h2>
+        </div>
 
-    <!-- ספריות Firebase (גרסת Compat החינמית והפשוטה) -->
+        <div class="updates-container">
+            <div class="updates-header">
+                <h3>מסמכים ועדכונים רשמיים</h3>
+                <button class="btn" id="adminLoginBtn" style="font-size: 0.9rem; padding: 8px 16px;">
+                    <i class="fas fa-user-shield"></i> <span id="adminBtnText">התחברות מנהל</span>
+                </button>
+            </div>
+
+            <div id="adminPanel" class="admin-panel-form" style="display: none;">
+                <h4>הוספת מודעה חדשה</h4>
+                <form id="addUpdateForm">
+                    <div class="form-group">
+                        <label>כותרת המודעה:</label>
+                        <input type="text" id="updateTitle" required placeholder="לדוגמה: עלון שבת / לוז חגים">
+                    </div>
+                    <div class="form-group">
+                        <label>תוכן / פירוט:</label>
+                        <textarea id="updateContent" rows="2" placeholder="פרטים נוספים לקהילה..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>קישור מצורף (אופציונלי):</label>
+                        <input type="url" id="updateLink" placeholder="https://drive.google.com/...">
+                    </div>
+                    <button type="submit" class="btn"><i class="fas fa-plus"></i> פרסם מודעה</button>
+                </form>
+            </div>
+
+            <div class="updates-list" id="updatesList"></div>
+        </div>
+    </section>
+
+    <!-- אודות -->
+    <section id="about">
+        <div class="section-title">
+            <h2>אודות הקהילה</h2>
+        </div>
+        <div class="rabbi-section">
+            <h3 style="color: var(--primary-color); font-size: 1.6rem; margin-top: 0;">מנהיג הקהילה - הרב שי וקנין שליט"א</h3>
+            <p style="max-width: 800px; margin: 15px auto; font-size: 1.1rem;">
+                קהילת "מאורי ישראל" בשכונת רחובות הצעירה מתאפיינת באווירה חמה, משפחתית ומזמינה. 
+                התפילות מתקיימות בנוסח עדות המזרח, ובכל ערב לאחר תפילת ערבית מתקיים שיעור תורה מרתק מפי רב בית הכנסת, הרב שי וקנין.
+            </p>
+            <div style="margin-top: 25px;">
+                <a href="https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" class="btn" style="background-color: var(--danger-color); color: white;">
+                    <i class="fab fa-youtube"></i> יוטיוב בית הכנסת
+                </a>
+                <a href="https://www.youtube.com/@shay_vaknin/videos" target="_blank" class="btn" style="background-color: var(--danger-color); color: white;">
+                    <i class="fab fa-youtube"></i> ערוץ השיעורים של הרב
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- גלריה -->
+    <section id="gallery">
+        <div class="section-title">
+            <h2>גלריית הווי הקהילה</h2>
+        </div>
+        <div class="gallery">
+            <div class="gallery-card">
+                <i class="fas fa-synagogue"></i>
+                <h4>בית הכנסת</h4>
+                <p>מקום תפילה ולימוד תורה באווירה קדושה ומזמינה</p>
+            </div>
+            <div class="gallery-card">
+                <i class="fas fa-book-reader"></i>
+                <h4>שיעורי תורה</h4>
+                <p>שיעורים יומיים בהלכה ובאגדה מפי רב הקהילה</p>
+            </div>
+            <div class="gallery-card">
+                <i class="fas fa-users"></i>
+                <h4>ערבי קהילה</h4>
+                <p>ערבי התעלות, התוועדויות ופעילויות לכל המשפחה</p>
+            </div>
+            <div class="gallery-card">
+                <i class="fas fa-child"></i>
+                <h4>נוער וילדים</h4>
+                <p>אמירת תהילים בשבתות ופעילויות חגים לילדים</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- תרומות -->
+    <section id="donate">
+        <div class="section-title">
+            <h2>שותפות ותרומות</h2>
+        </div>
+        <div class="donate-box">
+            <i class="fas fa-hand-holding-heart" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 15px;"></i>
+            <p style="font-size: 1.1rem; margin-bottom: 25px;">
+                בית הכנסת והמרכז הקהילתי פועל בזכות השותפות והתמיכה שלכם. <br>
+                ניתן להעביר תרומות, דמי חבר, קניית עליות ופדיון כפרות בהעברה בנקאית או במזומן לגבאי.
+            </p>
+            
+            <div class="bank-details">
+                <h4><i class="fas fa-university"></i> פרטי חשבון להעברה בנקאית:</h4>
+                <p><strong>בנק:</strong> דיסקונט (11)</p>
+                <p><strong>סניף:</strong> רחובות (045)</p>
+                <p><strong>מספר חשבון:</strong> 134939257</p>
+            </div>
+
+            <div class="cash-details">
+                <h4><i class="fas fa-wallet"></i> לתשלום במזומן:</h4>
+                <p>ניתן לפנות לגבאי ביהכ"נ <strong>נתי סיטון</strong> - 050-4062828</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- פוטר -->
+    <footer>
+        <p>© 2026 קהילת מאורי ישראל - רחובות הצעירה. כל הזכויות שמורות.</p>
+        <div class="social-links">
+            <a href="https://chat.whatsapp.com/DGLLkRJHyhv4mwzmIy9EOK?s=hd&p=i&mlu=4" target="_blank" title="ווטסאפ"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.youtube.com/@%D7%91%D7%99%D7%AA_%D7%9B%D7%A0%D7%A1%D7%AA_%D7%9E%D7%90%D7%95%D7%A8%D7%99_%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" title="יוטיוב בית הכנסת"><i class="fab fa-youtube"></i></a>
+        </div>
+    </footer>
+
+    <!-- מודל התחברות ללוח מודעות (Local Admin) -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h3 style="color: var(--primary-color); margin-bottom: 15px;">התחברות מנהל אתר</h3>
+            <div class="form-group">
+                <label>הזן סיסמה:</label>
+                <input type="password" id="adminPassword" placeholder="הזן סיסמה (ברירת מחדל: 1234)">
+            </div>
+            <button class="btn" id="submitLoginBtn" style="width: 100%;">התחבר לניהול</button>
+            <p id="loginError" style="color: var(--danger-color); display: none; margin-top: 10px; font-size: 0.9rem;">סיסמה שגויה!</p>
+        </div>
+    </div>
+
+    <!-- ספריות Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
     
-    <!-- קישור לסיום ל-JS שלנו -->
+    <!-- קישור לסקריפט שלנו -->
     <script src="script.js"></script>
 </body>
 </html>
